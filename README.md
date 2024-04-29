@@ -29,26 +29,6 @@ Laravelは、現代のWebアプリケーションフレームワークの中で�
 
 読むのが苦手な場合は、[Laracasts](https://laracasts.com)が役立つかもしれません。Laracastsには、Laravel、現代のPHP、ユニットテスト、JavaScriptを含むさまざまなトピックに関する何千ものビデオチュートリアルがあります。包括的なビデオライブラリに飛び込んでスキルを向上させましょう。
 
-## Laravelのスポンサー
-
-Laravelの開発を支援してくださる以下のスポンサーに感謝します。スポンサーになることに興味がある場合は、[Laravelパートナーズプログラム](https://partners.laravel.com)をご覧ください。
-
-### プレミアムパートナー
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
 ## 貢献
 
 Laravelフレームワークへの貢献を考えていただきありがとうございます！貢献ガイドは[Laravelのドキュメント](https://laravel.com/docs/contributions)で見ることができます。
