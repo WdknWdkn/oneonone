@@ -1,37 +1,61 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>面談一覧</h1>
-    <a href="{{ route('interviews.create') }}" class="btn btn-primary">新規登録</a>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>面談日時</th>
-                <th>面談者</th>
-                <th>面談対象者</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($interviews as $interview)
-            <tr>
-                <td>{{ $interview->id }}</td>
-                <td>{{ $interview->interview_date }}</td>
-                <td>{{ $interview->interviewer_name }}</td>
-                <td>{{ $interview->interviewee_name }}</td>
-                <td>
-                    <a href="{{ route('interviews.edit', $interview->id) }}" class="btn btn-success">編集</a>
-                    <form action="{{ route('interviews.destroy', $interview->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">削除</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="py-6">
+        <h1 class="text-2xl font-semibold text-gray-900">面談一覧</h1>
+        <div class="py-4">
+            <a href="{{ route('interviews.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">新規登録</a>
+        </div>
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            ID
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            面談日時
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            面談者
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            面談対象者
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach ($interviews as $interview)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ $interview->id }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ $interview->interview_date }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ $interview->interviewer_name }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ $interview->interviewee_name }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="{{ route('interviews.edit', $interview->id) }}" class="text-indigo-600 hover:text-indigo-900">編集</a>
+                            <form action="{{ route('interviews.destroy', $interview->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-900">削除</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 @endsection
