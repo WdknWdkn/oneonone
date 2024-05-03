@@ -1,10 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+<header class="bg-white shadow w-full">
+    <div class="w-full py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">面談一覧</h2>
+    </div>
+</header>
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="py-6">
-        <h1 class="text-2xl font-semibold text-gray-900">面談一覧</h1>
-        <div class="py-4">
+        <div class="py-4 px-4">
             <a href="{{ route('interviews.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">新規登録</a>
         </div>
         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
