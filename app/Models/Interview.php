@@ -21,6 +21,11 @@ class Interview extends Model
 
     // 日付として扱う属性を指定
     protected $dates = ['interview_date'];
+    
+    public function getFormattedDateAttribute()
+    {
+        return $this->interview_date->format('Y-m-d');
+    }
 
     // リレーション定義
     public function interviewer()
