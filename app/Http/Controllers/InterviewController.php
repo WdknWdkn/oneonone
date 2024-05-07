@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInterviewRequest;
 use App\Models\Interview;
+use App\Models\User;
 
 class InterviewController extends Controller
 {
@@ -15,7 +16,8 @@ class InterviewController extends Controller
     
     public function create()
     {
-        return view('interviews.create');
+        $users = User::all();
+        return view('interviews.create', compact('users'));
     }
     
     public function store(StoreInterviewRequest $request)
@@ -28,7 +30,8 @@ class InterviewController extends Controller
     public function edit(string $id)
     {
         $interview = Interview::findOrFail($id);
-        return view('interviews.edit', compact('interview'));
+        $users = User::all();
+        return view('interviews.edit', compact('interview', 'users'));
     }
     
     public function update(StoreInterviewRequest $request, string $id)

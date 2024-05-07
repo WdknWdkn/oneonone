@@ -38,10 +38,15 @@
         </div>
         <!-- 面談者ID -->
         <div class="py-2">
-            <label for="interviewer_id" class="block text lg font-medium text-gray-700">面談者ID</label>
-            <input type="text" id="interviewer_id" name="interviewer_id" 
-                value="{{ old('interviewer_id') }}"
-                required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <label for="interviewer_id" class="block text-lg font-medium text-gray-700">面談者ID</label>
+            <select id="interviewer_id" name="interviewer_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="">選択してください</option>
+                @foreach ($users as $user)
+                <option value="{{ $user->id }}" {{ old('interviewer_id', $interview->interviewer_id ?? '') == $user->id ? 'selected' : '' }}>
+                    {{ $user->name }}
+                </option>
+                @endforeach
+            </select>
         </div>
         <!-- 面談対象者名 -->
         <div class="py-2">
@@ -53,9 +58,14 @@
         <!-- 面談対象者ID -->
         <div class="py-2">
             <label for="interviewee_id" class="block text lg font-medium text-gray-700">被面談者名ID</label>
-            <input type="text" id="interviewee_id" name="interviewee_id" 
-                value="{{ old('interviewee_id') }}"
-                required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <select id="interviewee_id" name="interviewee_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="">選択してください</option>
+                @foreach ($users as $user)
+                <option value="{{ $user->id }}" {{ old('interviewee_id', $interview->interviewee_id ?? '') == $user->id ? 'selected' : '' }}>
+                    {{ $user->name }}
+                </option>
+                @endforeach
+            </select>
         </div>
         <!-- 面談内容 -->
         <div class="py-2">
