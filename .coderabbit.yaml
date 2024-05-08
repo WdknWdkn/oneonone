@@ -1,9 +1,14 @@
 language: "ja"
 reviews:
-  profile: "chill"
+  profile: "detailed"
   high_level_summary: true
   poem: false
   comment_always: true
+  focus_areas:
+    - "architecture"
+    - "performance"
+    - "security"
+    - "code_quality"
 auto_review:
   enabled: true
   ignore_title_keywords:
