@@ -1,7 +1,7 @@
 import React from 'react';
 
 const App: React.FC = () => {
-  return <h1>環境構築大成功ーーーー！！！！！</h1>;
+  return <h1>ts環境</h1>;
 };
 
 export default App;
