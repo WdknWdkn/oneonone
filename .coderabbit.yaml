@@ -1,6 +1,6 @@
 language: "ja"
 reviews:
-  profile: "detailed"
+  profile: "assertive"
   high_level_summary: true
   poem: false
   comment_always: true
@@ -9,12 +9,5 @@ reviews:
     - "performance"
     - "security"
     - "code_quality"
-auto_review:
-  enabled: true
-  ignore_title_keywords:
-    - "WIP"
-    - "DO NOT MERGE"
-  drafts: true
-  comment_on_every_change: true
 chat:
   auto_reply: true

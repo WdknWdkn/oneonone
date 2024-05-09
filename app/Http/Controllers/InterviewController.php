@@ -17,9 +17,10 @@ class InterviewController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('interviews.create', compact('users'));
+        $interview = new Interview(); // 空のインタビューインスタンスを作成
+        return view('interviews.create', compact('users', 'interview'));
     }
-    
+        
     public function store(StoreInterviewRequest $request)
     {
         $interview = new Interview($request->validated());
