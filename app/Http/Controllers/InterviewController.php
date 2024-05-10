@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Interview;
 use App\Models\User;
 use App\Queries\InterviewQuery;
+use App\Http\Requests\StoreInterviewRequest;  // StoreInterviewRequest クラスのインポートを追加
 
 class InterviewController extends Controller
 {
@@ -14,7 +15,7 @@ class InterviewController extends Controller
         $interviews = (new InterviewQuery(request()))->apply();
         return view('interviews.index', compact('interviews', 'users'));
     }
-    
+
     public function create()
     {
         $users = User::all();
