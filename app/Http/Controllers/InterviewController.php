@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreInterviewRequest;
 use App\Models\Interview;
 use App\Models\User;
+use App\Queries\InterviewQuery;
 
 class InterviewController extends Controller
 {
     public function index()
     {
-        $interviews = Interview::all();
-        return view('interviews.index', compact('interviews'));
+        $users = User::all(); // 全ユーザーを取得
+        $interviews = (new InterviewQuery(request()))->apply();
+        return view('interviews.index', compact('interviews', 'users'));
     }
     
     public function create()
