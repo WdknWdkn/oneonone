@@ -18,11 +18,13 @@ class InterviewQuery
 
     public function apply()
     {
-        if ($interviewer_id = $this->request->interviewer_id) {
+        $interviewer_id = $this->request->interviewer_id;
+        if ($interviewer_id) {
             $this->query->where('interviewer_id', $interviewer_id);
         }
 
-        if ($interviewee_id = $this->request->interviewee_id) {
+        $interviewee_id = $this->request->interviewee_id;
+        if ($interviewee_id) {
             $this->query->where('interviewee_id', $interviewee_id);
         }
 
