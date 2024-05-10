@@ -14,31 +14,31 @@
         <form action="{{ route('interviews.index') }}" method="GET">
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
 
-<!-- 面談者IDのセレクトボックス -->
-<div>
-    <label for="interviewer_id" class="block text-sm font-medium text-gray-700">面談者ID:</label>
-    <select id="interviewer_id" name="interviewer_id" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-        <option value="">選択してください</option>
-        @foreach ($users as $user)
-            <option value="{{ $user->id }}" {{ (request('interviewer_id') == $user->id) ? 'selected' : '' }}>
-                {{ $user->name }}
-            </option>
-        @endforeach
-    </select>
-</div>
+                <!-- 面談者IDのセレクトボックス -->
+                <div>
+                    <label for="interviewer_id" class="block text-sm font-medium text-gray-700">面談者ID:</label>
+                    <select id="interviewer_id" name="interviewer_id" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        <option value="">選択してください</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}" {{ (request('interviewer_id') == $user->id) ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-<!-- 被面談者IDのセレクトボックス -->
-<div>
-    <label for="interviewee_id" class="block text-sm font-medium text-gray-700">被面談者ID:</label>
-    <select id="interviewee_id" name="interviewee_id" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-        <option value="">選択してください</option>
-        @foreach ($users as $user)
-            <option value="{{ $user->id }}" {{ (request('interviewee_id') == $user->id) ? 'selected' : '' }}>
-                {{ $user->name }}
-            </option>
-        @endforeach
-    </select>
-</div>
+                <!-- 被面談者IDのセレクトボックス -->
+                <div>
+                    <label for="interviewee_id" class="block text-sm font-medium text-gray-700">被面談者ID:</label>
+                    <select id="interviewee_id" name="interviewee_id" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        <option value="">選択してください</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}" {{ (request('interviewee_id') == $user->id) ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             <div>
                     <label for="date_from" class="block text-sm font-medium text-gray-700">面談日From:</label>
                     <input type="date" id="date_from" name="date_from" value="{{ request('date_from') }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
