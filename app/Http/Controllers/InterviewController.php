@@ -5,21 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Interview;
 use App\Models\User;
 use App\Queries\InterviewQuery;
-use App\Http\Requests\StoreInterviewRequest;  // StoreInterviewRequest クラスのインポートを追加
+use App\Http\Requests\StoreInterviewRequest;
+use Inertia\Inertia;
 
 class InterviewController extends Controller
 {
     public function index()
     {
-        $users = User::all(); // 全ユーザーを取得
+        $users = User::all();
         $interviews = (new InterviewQuery(request()))->apply();
-        return view('interviews.index', compact('interviews', 'users'));
+        // return view('interviews.index', compact('interviews', 'users'));
+        return Inertia::render('Interviews/Index', ['interviews' => $interviews, 'users' => $users]);
     }
 
     public function create()
     {
         $users = User::all();
-        $interview = new Interview(); // 空のインタビューインスタンスを作成
+        $interview = new Interview();
         return view('interviews.create', compact('users', 'interview'));
     }
         
