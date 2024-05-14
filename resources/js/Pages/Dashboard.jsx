@@ -1,5 +1,6 @@
+import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head } from '@inertiajs/inertia-react';
 
 export default function Dashboard({ auth }) {
     return (

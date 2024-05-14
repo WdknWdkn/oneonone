@@ -14,7 +14,6 @@ class InterviewController extends Controller
     {
         $users = User::all();
         $interviews = (new InterviewQuery(request()))->apply();
-        // return view('interviews.index', compact('interviews', 'users'));
         return Inertia::render('Interviews/Index', ['interviews' => $interviews, 'users' => $users]);
     }
 
@@ -22,30 +21,30 @@ class InterviewController extends Controller
     {
         $users = User::all();
         $interview = new Interview();
-        return view('interviews.create', compact('users', 'interview'));
+        return Inertia::render('Interviews/Create', ['users' => $users, 'interview' => $interview]);
     }
-        
+
     public function store(StoreInterviewRequest $request)
     {
         $interview = new Interview($request->validated());
         $interview->save();
         return redirect()->route('interviews.index')->with('success', '面談が正常に登録されました。');
     }
-    
+
     public function edit(string $id)
     {
         $interview = Interview::findOrFail($id);
         $users = User::all();
         return view('interviews.edit', compact('interview', 'users'));
     }
-    
+
     public function update(StoreInterviewRequest $request, string $id)
     {
         $interview = Interview::findOrFail($id);
         $interview->update($request->validated());
         return redirect()->route('interviews.index')->with('success', '面談情報が更新されました。');
     }
-    
+
     public function destroy(string $id)
     {
         $interview = Interview::findOrFail($id);
