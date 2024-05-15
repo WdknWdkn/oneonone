@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { usePage } from '@inertiajs/inertia-react';
-import axios from 'axios';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/inertia-react';
+import { SelectInput, TextInput } from '@/Components/FormInputs';  // 共通フォルダからインポート
 
 const Index = () => {
     const { auth, users: initialUsers, interviews: initialInterviews } = usePage().props;
@@ -16,22 +16,6 @@ const Index = () => {
 
     const toggleForm = () => {
         setSearchFormVisible(!searchFormVisible);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.get('/api/interviews', {
-            params: {
-                interviewer_id: interviewerId,
-                interviewee_id: intervieweeId,
-                date_from: dateFrom,
-                date_to: dateTo
-            }
-        }).then(response => {
-            setInterviews(response.data);
-        }).catch(error => {
-            console.error('There was an error fetching the interviews!', error);
-        });
     };
 
     return (
@@ -48,64 +32,40 @@ const Index = () => {
 
                 {searchFormVisible && (
                     <div id="searchForm" className="bg-white p-4 shadow rounded-md">
-                        <form onSubmit={handleSubmit}>
+                        <form action="/interviews/" method="GET">
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-                                <div>
-                                    <label htmlFor="interviewer_id" className="block text-sm font-medium text-gray-700">面談者ID:</label>
-                                    <select
-                                        id="interviewer_id"
-                                        name="interviewer_id"
-                                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                        value={interviewerId}
-                                        onChange={(e) => setInterviewerId(e.target.value)}
-                                    >
-                                        <option value="">選択してください</option>
-                                        {users.map(user => (
-                                            <option key={user.id} value={user.id}>
-                                                {user.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label htmlFor="interviewee_id" className="block text-sm font-medium text-gray-700">被面談者ID:</label>
-                                    <select
-                                        id="interviewee_id"
-                                        name="interviewee_id"
-                                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                        value={intervieweeId}
-                                        onChange={(e) => setIntervieweeId(e.target.value)}
-                                    >
-                                        <option value="">選択してください</option>
-                                        {users.map(user => (
-                                            <option key={user.id} value={user.id}>
-                                                {user.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label htmlFor="date_from" className="block text-sm font-medium text-gray-700">面談日From:</label>
-                                    <input
-                                        type="date"
-                                        id="date_from"
-                                        name="date_from"
-                                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                        value={dateFrom}
-                                        onChange={(e) => setDateFrom(e.target.value)}
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="date_to" className="block text-sm font-medium text-gray-700">面談日To:</label>
-                                    <input
-                                        type="date"
-                                        id="date_to"
-                                        name="date_to"
-                                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                        value={dateTo}
-                                        onChange={(e) => setDateTo(e.target.value)}
-                                    />
-                                </div>
+                                <SelectInput
+                                    id="interviewer_id"
+                                    name="interviewer_id"
+                                    label="面談者ID"
+                                    value={interviewerId}
+                                    options={users}
+                                    onChange={(e) => setInterviewerId(e.target.value)}
+                                />
+                                <SelectInput
+                                    id="interviewee_id"
+                                    name="interviewee_id"
+                                    label="被面談者ID"
+                                    value={intervieweeId}
+                                    options={users}
+                                    onChange={(e) => setIntervieweeId(e.target.value)}
+                                />
+                                <TextInput
+                                    id="date_from"
+                                    name="date_from"
+                                    label="面談日From"
+                                    type="date"
+                                    value={dateFrom}
+                                    onChange={(e) => setDateFrom(e.target.value)}
+                                />
+                                <TextInput
+                                    id="date_to"
+                                    name="date_to"
+                                    label="面談日To"
+                                    type="date"
+                                    value={dateTo}
+                                    onChange={(e) => setDateTo(e.target.value)}
+                                />
                             </div>
                             <div className="mt-4">
                                 <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-400">
