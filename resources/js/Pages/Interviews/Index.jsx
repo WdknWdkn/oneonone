@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { usePage } from '@inertiajs/inertia-react';
-import axios from 'axios';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/inertia-react';
 
@@ -18,22 +17,6 @@ const Index = () => {
         setSearchFormVisible(!searchFormVisible);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.get('/api/interviews', {
-            params: {
-                interviewer_id: interviewerId,
-                interviewee_id: intervieweeId,
-                date_from: dateFrom,
-                date_to: dateTo
-            }
-        }).then(response => {
-            setInterviews(response.data);
-        }).catch(error => {
-            console.error('There was an error fetching the interviews!', error);
-        });
-    };
-
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -48,7 +31,7 @@ const Index = () => {
 
                 {searchFormVisible && (
                     <div id="searchForm" className="bg-white p-4 shadow rounded-md">
-                        <form onSubmit={handleSubmit}>
+                        <form action="/interviews/" method="GET">
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
                                 <div>
                                     <label htmlFor="interviewer_id" className="block text-sm font-medium text-gray-700">面談者ID:</label>

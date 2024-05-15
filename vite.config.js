@@ -8,7 +8,8 @@ export default defineConfig({
     laravel({
       input: [
         'resources/js/app.jsx',
-        'resources/js/Pages/Interviews/Index.jsx'
+        'resources/js/Pages/Interviews/Index.jsx',
+        'resources/js/Pages/Interviews/Create.jsx' // 必要なファイルが含まれていることを確認
       ],
       refresh: true,
     }),
