@@ -35,7 +35,7 @@ class InterviewController extends Controller
     {
         $interview = Interview::findOrFail($id);
         $users = User::all();
-        return view('interviews.edit', compact('interview', 'users'));
+        return Inertia::render('Interviews/Edit', ['users' => $users, 'interview' => $interview]);
     }
 
     public function update(StoreInterviewRequest $request, string $id)
