@@ -17,9 +17,8 @@ class InterviewApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $users = User::all();
         $interviews = (new InterviewQuery($request))->apply();
 
-        return response()->json(['interviews' => $interviews, 'users' => $users]);
+        return response()->json(['interviews' => $interviews]);
     }
 }
