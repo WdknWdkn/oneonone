@@ -13,8 +13,7 @@ class InterviewController extends Controller
     public function index()
     {
         $users = User::all();
-        $interviews = (new InterviewQuery(request()))->apply();
-        return Inertia::render('Interviews/Index', ['interviews' => $interviews, 'users' => $users]);
+        return Inertia::render('Interviews/Index', ['users' => $users]);
     }
 
     public function create()
@@ -43,12 +42,5 @@ class InterviewController extends Controller
         $interview = Interview::findOrFail($id);
         $interview->update($request->validated());
         return redirect()->route('interviews.index')->with('success', '面談情報が更新されました。');
-    }
-
-    public function destroy(string $id)
-    {
-        $interview = Interview::findOrFail($id);
-        $interview->delete();
-        return redirect()->route('interviews.index')->with('success', '面談が削除されました。');
     }
 }

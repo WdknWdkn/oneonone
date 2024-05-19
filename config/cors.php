@@ -6,12 +6,12 @@ return [
     |--------------------------------------------------------------------------
     | Laravel CORS
     |--------------------------------------------------------------------------
-    |
-    | Here you may configure your settings for cross-origin resource sharing
-    | or "CORS". This determines what cross-origin operations may execute
-    | in web browsers. You are free to adjust these settings as needed.
-    |
-    | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+    | このファイルは、Laravel CORS パッケージの設定ファイルです。
+    | ここで、クロスオリジンリソース共有の設定を行うことができます。
+    | これにより、Web ブラウザで実行されるクロスオリジン操作を決定します。
+    | 必要に応じてこれらの設定を調整することができます。
+    | 詳細については、以下のリンクを参照してください。
+    | https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |
     */
 

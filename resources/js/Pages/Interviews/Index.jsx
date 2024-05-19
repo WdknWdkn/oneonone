@@ -2,33 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { usePage } from '@inertiajs/inertia-react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/inertia-react';
-import { SelectInput, TextInput } from '@/Components/FormInputs';  // 共通フォルダからインポート
+import { SelectInput, TextInput } from '@/Components/FormInputs';
 import { Inertia } from '@inertiajs/inertia';
 
 const Index = () => {
-    const { auth, users: initialUsers, interviews: initialInterviews } = usePage().props;
+    const { auth, users: initialUsers } = usePage().props;
     const [searchFormVisible, setSearchFormVisible] = useState(false);
     const [interviewerId, setInterviewerId] = useState('');
     const [intervieweeId, setIntervieweeId] = useState('');
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
-    const [interviews, setInterviews] = useState(initialInterviews);
-
-    useEffect(() => {
-        setInterviews(initialInterviews || []);
-    }, [initialInterviews]);
+    const [interviews, setInterviews] = useState([]);
 
     const fetchInterviews = async (params = {}) => {
         try {
             const query = new URLSearchParams(params).toString();
-            const token = localStorage.getItem('token');
-            console.log('Token:', token);  // デバッグ用にトークンを確認
             const response = await fetch(`/api/interviews?${query}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`, // トークンを設定
                 },
             });
 
@@ -43,6 +36,10 @@ const Index = () => {
             setInterviews([]);
         }
     };
+
+    useEffect(() => {
+        fetchInterviews();  // 画面がロードされた際に面談一覧を取得
+    }, []);
 
     const toggleForm = () => {
         setSearchFormVisible(!searchFormVisible);
@@ -62,13 +59,32 @@ const Index = () => {
     const handleDelete = async (id, e) => {
         e.preventDefault();
         if (confirm('本当に削除しますか？')) {
-            await Inertia.delete(`/interviews/${id}`, {
-                onSuccess: () => {
-                    setInterviews(interviews.filter(interview => interview.id !== id));
+            try {
+                const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                const response = await fetch(`/api/interviews/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
-            });
+    
+                const data = await response.json();
+                if (data.success) {
+                    setInterviews(interviews.filter(interview => interview.id !== id));
+                } else {
+                    throw new Error('Delete interview failed');
+                }
+            } catch (error) {
+                console.error('Delete interview failed:', error);
+            }
         }
-    };
+    }
 
     return (
         <AuthenticatedLayout

@@ -41,7 +41,7 @@ return [
             'provider' => 'users',
         ],
         'api' => [
-            'driver' => 'passport', // もしくは 'token'
+            'driver' => 'session', // もしくは 'token'
             'provider' => 'users',
         ],
     ],
