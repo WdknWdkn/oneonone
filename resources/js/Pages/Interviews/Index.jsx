@@ -1,22 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePage } from '@inertiajs/inertia-react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/inertia-react';
-import { SelectInput, TextInput } from '@/Components/FormInputs';  // 共通フォルダからインポート
+import { SelectInput, TextInput } from '@/Components/FormInputs';
+import { Inertia } from '@inertiajs/inertia';
 
 const Index = () => {
-    const { auth, users: initialUsers, interviews: initialInterviews } = usePage().props;
+    const { auth, users: initialUsers } = usePage().props;
     const [searchFormVisible, setSearchFormVisible] = useState(false);
     const [interviewerId, setInterviewerId] = useState('');
     const [intervieweeId, setIntervieweeId] = useState('');
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
-    const [users, setUsers] = useState(initialUsers);
-    const [interviews, setInterviews] = useState(initialInterviews);
+    const [interviews, setInterviews] = useState([]);
+
+    const fetchInterviews = async (params = {}) => {
+        try {
+            const query = new URLSearchParams(params).toString();
+            const response = await fetch(`/api/interviews?${query}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            setInterviews(data.interviews || []);
+        } catch (error) {
+            console.error('Fetch interviews failed:', error);
+            setInterviews([]);
+        }
+    };
+
+    useEffect(() => {
+        fetchInterviews();  // 画面がロードされた際に面談一覧を取得
+    }, []);
 
     const toggleForm = () => {
         setSearchFormVisible(!searchFormVisible);
     };
+
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        const params = {
+            interviewer_id: interviewerId,
+            interviewee_id: intervieweeId,
+            date_from: dateFrom,
+            date_to: dateTo,
+        };
+        await fetchInterviews(params);
+    };
+
+    const handleDelete = async (id, e) => {
+        e.preventDefault();
+        if (confirm('本当に削除しますか？')) {
+            try {
+                const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                const response = await fetch(`/api/interviews/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+    
+                const data = await response.json();
+                if (data.success) {
+                    setInterviews(interviews.filter(interview => interview.id !== id));
+                } else {
+                    throw new Error('Delete interview failed');
+                }
+            } catch (error) {
+                console.error('Delete interview failed:', error);
+            }
+        }
+    }
 
     return (
         <AuthenticatedLayout
@@ -32,14 +100,14 @@ const Index = () => {
 
                 {searchFormVisible && (
                     <div id="searchForm" className="bg-white p-4 shadow rounded-md">
-                        <form action="/interviews/" method="GET">
+                        <form onSubmit={handleSearch}>
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
                                 <SelectInput
                                     id="interviewer_id"
                                     name="interviewer_id"
                                     label="面談者ID"
                                     value={interviewerId}
-                                    options={users}
+                                    options={initialUsers.map(user => ({ id: user.id, name: user.name }))}
                                     onChange={(e) => setInterviewerId(e.target.value)}
                                 />
                                 <SelectInput
@@ -47,7 +115,7 @@ const Index = () => {
                                     name="interviewee_id"
                                     label="被面談者ID"
                                     value={intervieweeId}
-                                    options={users}
+                                    options={initialUsers.map(user => ({ id: user.id, name: user.name }))}
                                     onChange={(e) => setIntervieweeId(e.target.value)}
                                 />
                                 <TextInput
@@ -87,7 +155,7 @@ const Index = () => {
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">面談日時</th>
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">面談者</th>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">面談対象者</th>
+                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">被面談者</th>
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
                                 </tr>
                             </thead>
@@ -102,7 +170,12 @@ const Index = () => {
                                             <a href={`/interviews/${interview.id}/edit`} className="text-indigo-600 hover:text-indigo-900">編集</a>
                                             <form action={`/interviews/${interview.id}`} method="POST" className="inline">
                                                 <input type="hidden" name="_method" value="DELETE" />
-                                                <button type="submit" className="text-red-600 hover:text-red-900">削除</button>
+                                                <button
+                                                    className="text-red-600 hover:text-red-900"
+                                                    onClick={(e) => handleDelete(interview.id, e)}
+                                                >
+                                                    削除
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
