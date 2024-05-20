@@ -14,6 +14,11 @@ const Index = () => {
     const [dateTo, setDateTo] = useState('');
     const [interviews, setInterviews] = useState([]);
 
+    const handleError = (error, defaultMessage) => {
+        console.error(defaultMessage, error);
+        alert(defaultMessage);
+    };
+
     const fetchInterviews = async (params = {}) => {
         try {
             const query = new URLSearchParams(params).toString();
@@ -24,15 +29,15 @@ const Index = () => {
                     'Accept': 'application/json',
                 },
             });
-
+    
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error(`Failed to fetch interviews: ${response.statusText}`);
             }
-
+    
             const data = await response.json();
             setInterviews(data.interviews || []);
         } catch (error) {
-            console.error('Fetch interviews failed:', error);
+            handleError(error, 'Fetch interviews failed');
             setInterviews([]);
         }
     };
@@ -45,15 +50,21 @@ const Index = () => {
         setSearchFormVisible(!searchFormVisible);
     };
 
+    const buildSearchParams = () => ({
+        interviewer_id: interviewerId,
+        interviewee_id: intervieweeId,
+        date_from: dateFrom,
+        date_to: dateTo,
+    });
+    
     const handleSearch = async (e) => {
         e.preventDefault();
-        const params = {
-            interviewer_id: interviewerId,
-            interviewee_id: intervieweeId,
-            date_from: dateFrom,
-            date_to: dateTo,
-        };
-        await fetchInterviews(params);
+        try {
+            const params = buildSearchParams();
+            await fetchInterviews(params);
+        } catch (error) {
+            handleError(error, 'Search interviews failed');
+        }
     };
 
     const handleDelete = async (id, e) => {
@@ -69,11 +80,11 @@ const Index = () => {
                         'X-CSRF-TOKEN': csrfToken,
                     },
                 });
-    
+
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error(`Failed to delete interview: ${response.statusText}`);
                 }
-    
+
                 const data = await response.json();
                 if (data.success) {
                     setInterviews(interviews.filter(interview => interview.id !== id));
@@ -81,10 +92,10 @@ const Index = () => {
                     throw new Error('Delete interview failed');
                 }
             } catch (error) {
-                console.error('Delete interview failed:', error);
+                handleError(error, 'Delete interview failed');
             }
         }
-    }
+    };
 
     return (
         <AuthenticatedLayout

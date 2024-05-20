@@ -15,10 +15,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/index', function () {
-    return view('index');
-});
-
 // ミドルウェアグループ内にInterviewControllerのルートを配置
 Route::middleware('auth')->group(function () {
     Route::resource('interviews', InterviewController::class);
