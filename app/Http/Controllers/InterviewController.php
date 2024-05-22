@@ -43,4 +43,11 @@ class InterviewController extends Controller
         $interview->update($request->validated());
         return redirect()->route('interviews.index')->with('success', '面談情報が更新されました。');
     }
+
+    public function show(string $id)
+    {
+        $interview = Interview::with(['interviewer', 'interviewee'])->findOrFail($id);
+        return Inertia::render('Interviews/Detail', ['interview' => $interview]);
+    }
 }
+

@@ -1,4 +1,3 @@
-// Edit.jsx
 import React, { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { usePage } from '@inertiajs/inertia-react';
@@ -10,9 +9,8 @@ const InterviewEdit = ({ interview: initialInterview }) => {
     const { auth, users, errors } = usePage().props;
     const [interview, setInterview] = useState(initialInterview);
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setInterview({ ...interview, [name]: value });
+    const handleInputChange = (updatedInterview) => {
+        setInterview(updatedInterview);
     };
 
     const handleSubmit = (e) => {

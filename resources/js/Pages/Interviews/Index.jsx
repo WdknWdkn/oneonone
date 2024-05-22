@@ -69,11 +69,11 @@ const Index = () => {
                         'X-CSRF-TOKEN': csrfToken,
                     },
                 });
-    
+
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-    
+
                 const data = await response.json();
                 if (data.success) {
                     setInterviews(interviews.filter(interview => interview.id !== id));
@@ -94,7 +94,10 @@ const Index = () => {
             <Head title="面談一覧" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <button onClick={toggleForm} className="mt-4 mb-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <button
+                    onClick={toggleForm}
+                    className="mt-4 mb-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                >
                     検索を開く
                 </button>
 
@@ -136,7 +139,10 @@ const Index = () => {
                                 />
                             </div>
                             <div className="mt-4">
-                                <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-400">
+                                <button
+                                    type="submit"
+                                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                                >
                                     検索
                                 </button>
                             </div>
@@ -146,7 +152,12 @@ const Index = () => {
 
                 <div className="py-6">
                     <div className="py-4">
-                        <a href="/interviews/create" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">新規登録</a>
+                        <a
+                            href="/interviews/create"
+                            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                        >
+                            新規登録
+                        </a>
                     </div>
                     <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                         <table className="min-w-full divide-y divide-gray-200">
@@ -167,11 +178,22 @@ const Index = () => {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{interview.interviewer_name}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{interview.interviewee_name}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <a href={`/interviews/${interview.id}/edit`} className="text-indigo-600 hover:text-indigo-900">編集</a>
+                                            <button
+                                                onClick={() => window.location.href=`/interviews/${interview.id}/`}
+                                                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mr-2"
+                                            >
+                                                詳細
+                                            </button>
+                                            <button
+                                                onClick={() => window.location.href=`/interviews/${interview.id}/edit`}
+                                                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mr-2"
+                                            >
+                                                編集
+                                            </button>
                                             <form action={`/interviews/${interview.id}`} method="POST" className="inline">
                                                 <input type="hidden" name="_method" value="DELETE" />
                                                 <button
-                                                    className="text-red-600 hover:text-red-900"
+                                                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                                                     onClick={(e) => handleDelete(interview.id, e)}
                                                 >
                                                     削除
