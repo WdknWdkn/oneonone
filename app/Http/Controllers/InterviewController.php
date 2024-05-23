@@ -47,4 +47,11 @@ class InterviewController extends Controller
         $users = User::all();
         return Inertia::render('Interviews/Index', ['users' => $users])->with('success', '面談情報が更新されました。');
     }
+
+    public function show(string $id)
+    {
+        $interview = Interview::with(['interviewer', 'interviewee'])->findOrFail($id);
+        return Inertia::render('Interviews/Detail', ['interview' => $interview]);
+    }
 }
+
