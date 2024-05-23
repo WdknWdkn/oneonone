@@ -27,7 +27,9 @@ class InterviewController extends Controller
     {
         $interview = new Interview($request->validated());
         $interview->save();
-        return redirect()->route('interviews.index')->with('success', '面談が正常に登録されました。');
+
+        $users = User::all();
+        return Inertia::render('Interviews/Index', ['users' => $users])->with('success', '面談が正常に登録されました。');
     }
 
     public function edit(string $id)
@@ -41,6 +43,8 @@ class InterviewController extends Controller
     {
         $interview = Interview::findOrFail($id);
         $interview->update($request->validated());
-        return redirect()->route('interviews.index')->with('success', '面談情報が更新されました。');
+
+        $users = User::all();
+        return Inertia::render('Interviews/Index', ['users' => $users])->with('success', '面談情報が更新されました。');
     }
 }

@@ -11,8 +11,13 @@ class InterviewApiController extends Controller
 {
     public function index(Request $request)
     {
-        $interviews = (new InterviewQuery($request))->apply();
-        return response()->json(['interviews' => $interviews]);
+        try {
+            $interviews = (new InterviewQuery($request))->apply();
+            return response()->json(['interviews' => $interviews]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
+        }
+        
     }
 
     public function destroy(Request $request, $id)
