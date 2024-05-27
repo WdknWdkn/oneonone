@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\InterviewApiController;
+use App\Http\Controllers\Api\TemplateApiController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
