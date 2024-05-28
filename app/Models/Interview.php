@@ -19,7 +19,9 @@ class Interview extends Model
         'notes'
     ];
 
-    // 日付として扱う属性を指定
+    /**
+     * interview_dateを日付ミューテータで扱う
+     */
     protected $dates = ['interview_date'];
     
     public function getFormattedDateAttribute()
@@ -27,7 +29,9 @@ class Interview extends Model
         return $this->interview_date->format('Y-m-d');
     }
 
-    // リレーション定義
+    /**
+     * 面談を登録したユーザーを取得
+     */
     public function interviewer()
     {
         return $this->belongsTo(User::class, 'interviewer_id');
@@ -36,4 +40,12 @@ class Interview extends Model
     {
         return $this->belongsTo(User::class, 'interviewee_id');
     }   
+
+    /**
+     * 面談回答を取得
+     */
+    public function answers()
+    {
+        return $this->hasMany(InterviewAnswer::class);
+    }
 }
