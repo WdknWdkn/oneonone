@@ -7,10 +7,21 @@ import Form from './Components/Form';
 
 const InterviewEdit = ({ interview: initialInterview }) => {
     const { auth, users, errors } = usePage().props;
-    const [interview, setInterview] = useState(initialInterview);
+    const [interview, setInterview] = useState({
+        ...initialInterview,
+        interviewer_name: initialInterview.interviewer_name || '',
+        interviewee_name: initialInterview.interviewee_name || ''
+    });
 
-    const handleInputChange = (updatedInterview) => {
-        setInterview(updatedInterview);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setInterview(prevInterview => ({
+            ...prevInterview,
+            [name]: value,
+            // インタビューワーIDやインタビューイーIDが変更された場合、名前も更新する
+            ...(name === 'interviewer_id' && { interviewer_name: users.find(user => user.id == value)?.name || '' }),
+            ...(name === 'interviewee_id' && { interviewee_name: users.find(user => user.id == value)?.name || '' }),
+        }));
     };
 
     const handleSubmit = (e) => {

@@ -14,5 +14,5 @@ class TemplateItem extends Model
     public function template()
     {
         return $this->belongsTo(Template::class);
-    }
+    }    
 }

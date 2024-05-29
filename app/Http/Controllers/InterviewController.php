@@ -50,8 +50,19 @@ class InterviewController extends Controller
 
     public function show(string $id)
     {
-        $interview = Interview::with(['interviewer', 'interviewee', 'answers.templateItem'])->findOrFail($id);
+        $interview = Interview::with([
+            'interviewer', 
+            'interviewee', 
+            'answers.templateItem', 
+            'templates.templateItems'
+        ])->findOrFail($id);
+    
         $templates = Template::with('templateItems')->get();
-        return Inertia::render('Interviews/Detail', ['interview' => $interview, 'templates' => $templates]);
+    
+        return Inertia::render('Interviews/Detail', [
+            'interview' => $interview,
+            'templates' => $templates
+        ]);
     }
+    
 }

@@ -1,22 +1,10 @@
 import React from 'react';
-import { SelectInput, TextInput } from '@/Components/FormInputs';
+import { SelectInput, TextInput, TextAreaInput } from '@/Components/FormInputs';
 
 const Form = ({ users, interview, handleInputChange, errors }) => {
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-
-        let updatedInterview = { ...interview, [name]: value };
-
-        if (name === 'interviewer_id') {
-            const selectedUser = users.find(user => user.id == value);
-            updatedInterview.interviewer_name = selectedUser ? selectedUser.name : '';
-        } else if (name === 'interviewee_id') {
-            const selectedUser = users.find(user => user.id == value);
-            updatedInterview.interviewee_name = selectedUser ? selectedUser.name : '';
-        }
-
-        handleInputChange(updatedInterview);
+        handleInputChange(e);
     };
 
     return (
@@ -71,21 +59,19 @@ const Form = ({ users, interview, handleInputChange, errors }) => {
             />
             {errors.interviewee_name && <span className="text-red-500 text-sm">{errors.interviewee_name}</span>}
 
-            <TextInput
+            <TextAreaInput
                 id="interview_content"
                 name="interview_content"
                 label="面談内容"
-                type="textarea"
                 value={interview.interview_content}
                 onChange={handleChange}
             />
             {errors.interview_content && <span className="text-red-500 text-sm">{errors.interview_content}</span>}
 
-            <TextInput
+            <TextAreaInput
                 id="notes"
                 name="notes"
                 label="備考"
-                type="textarea"
                 value={interview.notes}
                 onChange={handleChange}
             />

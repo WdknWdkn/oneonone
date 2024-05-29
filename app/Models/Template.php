@@ -14,5 +14,5 @@ class Template extends Model
     public function templateItems()
     {
         return $this->hasMany(TemplateItem::class);
-    }
+    }    
 }
