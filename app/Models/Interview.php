@@ -18,22 +18,25 @@ class Interview extends Model
         'interview_content',
         'notes'
     ];
-
-    // 日付として扱う属性を指定
     protected $dates = ['interview_date'];
     
-    public function getFormattedDateAttribute()
-    {
-        return $this->interview_date->format('Y-m-d');
-    }
-
-    // リレーション定義
     public function interviewer()
     {
         return $this->belongsTo(User::class, 'interviewer_id');
     }
+    
     public function interviewee()
     {
         return $this->belongsTo(User::class, 'interviewee_id');
-    }   
+    }
+
+    public function interviewTemplates()
+    {
+        return $this->hasMany(InterviewTemplate::class);
+    }
+
+    public function interviewAnswers()
+    {
+        return $this->hasMany(InterviewAnswer::class);
+    }
 }

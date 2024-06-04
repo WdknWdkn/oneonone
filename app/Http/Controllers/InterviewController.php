@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Interview;
 use App\Models\User;
-use App\Queries\InterviewQuery;
+use App\Models\Template;
 use App\Http\Requests\StoreInterviewRequest;
 use Inertia\Inertia;
 
@@ -50,8 +50,18 @@ class InterviewController extends Controller
 
     public function show(string $id)
     {
-        $interview = Interview::with(['interviewer', 'interviewee'])->findOrFail($id);
-        return Inertia::render('Interviews/Detail', ['interview' => $interview]);
+        $interview = Interview::with([
+            'interviewer',
+            'interviewee',
+            'interviewTemplates.template.templateItems',
+            'interviewAnswers.templateItem'
+        ])->findOrFail($id);
+        
+        $templates = Template::with('templateItems')->get();
+
+        return Inertia::render('Interviews/Detail', [
+            'interview' => $interview,
+            'templates' => $templates
+        ]);
     }
 }
-
