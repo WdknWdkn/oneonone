@@ -14,5 +14,10 @@ class Template extends Model
     public function templateItems()
     {
         return $this->hasMany(TemplateItem::class);
-    }    
+    }
+
+    public function interviewTemplates()
+    {
+        return $this->hasMany(InterviewTemplate::class);
+    }
 }

@@ -44,4 +44,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
+    public function interviewsAsInterviewer()
+    {
+        return $this->hasMany(Interview::class, 'interviewer_id');
+    }
+
+    public function interviewsAsInterviewee()
+    {
+        return $this->hasMany(Interview::class, 'interviewee_id');
+    }
 }

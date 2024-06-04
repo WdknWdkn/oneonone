@@ -15,8 +15,9 @@ class InterviewAnswer extends Model
     {
         return $this->belongsTo(Interview::class);
     }
+
     public function templateItem()
     {
-        return $this->belongsTo(TemplateItem::class, 'template_item_id');
-    }    
+        return $this->belongsTo(TemplateItem::class);
+    }
 }

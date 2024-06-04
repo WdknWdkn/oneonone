@@ -24,17 +24,19 @@ class Interview extends Model
     {
         return $this->belongsTo(User::class, 'interviewer_id');
     }
+    
     public function interviewee()
     {
         return $this->belongsTo(User::class, 'interviewee_id');
     }
-    public function templates()
+
+    public function interviewTemplates()
     {
-        return $this->belongsTo(InterviewTemplate::class);
+        return $this->hasMany(InterviewTemplate::class);
     }
-    public function answers()
+
+    public function interviewAnswers()
     {
         return $this->hasMany(InterviewAnswer::class);
     }
-    
 }

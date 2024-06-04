@@ -13,21 +13,22 @@ const Detail = () => {
     const [answers, setAnswers] = useState([]);
 
     useEffect(() => {
-        console.log('interview.answers:', interview.answers); // ここでanswersの内容を確認
-        if (selectedTemplateId) {
-            const template = templates.find(t => t.id == selectedTemplateId);
-            if (template) {
-                const newAnswers = template.template_items.map(item => {
-                    const existingAnswer = interview.answers?.find(a => a.template_item_id === item.id);
-                    return {
-                        question_id: item.id,
-                        question: item.question_text,
-                        answer: existingAnswer ? existingAnswer.answer_text : '',
-                    };
-                });
-                setAnswers(newAnswers);
-            }
-        }
+        if (!selectedTemplateId) return;
+
+        const template = templates.find(t => t.id == selectedTemplateId);
+
+        if (!template) return;
+
+        const newAnswers = template.template_items.map(item => {
+            const existingAnswer = interview.interview_answers?.find(a => a.template_item_id === item.id);
+            return {
+                question_id: item.id,
+                question: item.question_text,
+                answer: existingAnswer ? existingAnswer.answer_text : '',
+            };
+        });
+
+        setAnswers(newAnswers);
     }, [selectedTemplateId]);
 
     const handleDialogOpen = () => {
@@ -53,7 +54,7 @@ const Detail = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`/api/interviews/${interview.id}/answers`, { answers });
+            const response = await axios.post(`/api/interviews/${interview.id}/answers`, { answers, selectedTemplateId });
             if (response.status === 200) {
                 handleDialogClose();
                 window.location.reload();
@@ -73,23 +74,36 @@ const Detail = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div className="p-6 bg-white border-b border-gray-200">
-                        <h3 className="text-lg font-semibold">面談ID: {interview.id}</h3>
-                        <div className="mt-4">
-                            <p><strong>面談日時:</strong> {interview.interview_date}</p>
-                        </div>
-                        <div className="mt-4">
-                            <p><strong>面談者:</strong> {interview.interviewer?.name}</p>
-                        </div>
-                        <div className="mt-4">
-                            <p><strong>被面談者:</strong> {interview.interviewee?.name}</p>
-                        </div>
-                        <div className="mt-4">
-                            <p><strong>内容:</strong> {interview.interview_content}</p>
-                        </div>
-                        <div className="mt-4">
-                            <p><strong>メモ:</strong> {interview.notes}</p>
-                        </div>
-                        <AnsweredQuestions answers={interview.answers} />
+                        <strong>面談情報：</strong>
+                        <table className="min-w-full bg-white border">
+                            <tbody>
+                                <tr className="border-b">
+                                    <td className="py-2 px-4 border-b">面談ID</td>
+                                    <td className="py-2 px-4 border-b">{interview.id}</td>
+                                </tr>
+                                <tr className="border-b">
+                                    <td className="py-2 px-4 border-b">面談日時</td>
+                                    <td className="py-2 px-4 border-b">{interview.interview_date}</td>
+                                </tr>
+                                <tr className="border-b">
+                                    <td className="py-2 px-4 border-b">面談者</td>
+                                    <td className="py-2 px-4 border-b">{interview.interviewer?.name}</td>
+                                </tr>
+                                <tr className="border-b">
+                                    <td className="py-2 px-4 border-b">被面談者</td>
+                                    <td className="py-2 px-4 border-b">{interview.interviewee?.name}</td>
+                                </tr>
+                                <tr className="border-b">
+                                    <td className="py-2 px-4 border-b">内容</td>
+                                    <td className="py-2 px-4 border-b">{interview.interview_content}</td>
+                                </tr>
+                                <tr className="border-b">
+                                    <td className="py-2 px-4 border-b">メモ</td>
+                                    <td className="py-2 px-4 border-b">{interview.notes}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <AnsweredQuestions answers={interview.interview_answers} />
                         <div className="mt-6 flex space-x-4">
                             <InertiaLink
                                 href={`/interviews/${interview.id}/edit`}
