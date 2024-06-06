@@ -24,7 +24,7 @@ class Interview extends Model
     {
         return $this->belongsTo(User::class, 'interviewer_id');
     }
-    
+
     public function interviewee()
     {
         return $this->belongsTo(User::class, 'interviewee_id');

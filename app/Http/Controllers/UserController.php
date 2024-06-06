@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Interview;
 use App\Queries\UserQuery;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -25,5 +26,20 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         return Inertia::render('Users/Detail', ['user' => $user]);
+    }
+
+    public function getUserInterviews($id)
+    {
+        $interviews = Interview::with([
+            'interviewer',
+            'interviewee',
+            'interviewAnswers.templateItem'
+        ])
+        ->where('interviewer_id', $id)
+        ->get();
+
+        // dd($interviews);
+        
+        return response()->json(['interviews' => $interviews]);
     }
 }
