@@ -17,9 +17,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name', 'email', 'password', 'current_department_id', 'current_position_id',
+
     ];
 
     /**
@@ -53,5 +52,21 @@ class User extends Authenticatable
     public function interviewsAsInterviewee()
     {
         return $this->hasMany(Interview::class, 'interviewee_id');
+    }
+
+    /**
+     * 部署とのリレーションシップ
+     */
+    public function department()
+    {
+        return $this->belongsTo(UserDepartment::class, 'current_department_id');
+    }
+    
+    /**
+     * 役職とのリレーションシップ
+     */
+    public function position()
+    {
+        return $this->belongsTo(UserPosition::class, 'current_position_id');
     }
 }

@@ -4,6 +4,9 @@ use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserDepartmentController;
+use App\Http\Controllers\UserPositionController;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,8 +30,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('templates', TemplateController::class);
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
-    Route::get('/api/users/{id}/interviews', [UserController::class, 'getUserInterviews']);
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/api/users/{user}/interviews', [UserController::class, 'getUserInterviews']);
+
+    Route::put('/users/{user}/update-department', [UserController::class, 'updateDepartment'])->name('users.update-department');
+    Route::put('/users/{user}/update-position', [UserController::class, 'updatePosition'])->name('users.update-position');
+    
+    Route::resource('user-departments', UserDepartmentController::class);
+    Route::resource('user-positions', UserPositionController::class);
 });
 
 Route::get('/dashboard', function () {
@@ -36,5 +45,4 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/api.php';
-
 require __DIR__.'/auth.php';

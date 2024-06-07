@@ -30,6 +30,12 @@ export default function Authenticated({ user, header, children }) {
                                 <NavLink href={route('users.index')} active={route().current('users.index')}>
                                     User
                                 </NavLink>
+                                <NavLink href={route('user-positions.index')} active={route().current('user-positions.index')}>
+                                    Position
+                                </NavLink>
+                                <NavLink href={route('user-departments.index')} active={route().current('user-departments.index')}>
+                                    Department
+                                </NavLink>
                                 <NavLink href={route('templates.index')} active={route().current('templates.index')}>
                                     Template
                                 </NavLink>
