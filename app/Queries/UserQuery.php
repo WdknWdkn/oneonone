@@ -30,7 +30,8 @@ class UserQuery
             $this->query->where('email', 'LIKE', '%' . $email . '%');
         }
 
-        return $this->query->get();
+        // クエリビルダーを返す
+        return $this->query;
     }
 
     public function getParams()
@@ -38,3 +39,4 @@ class UserQuery
         return $this->params;
     }
 }
+
