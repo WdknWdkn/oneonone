@@ -1,17 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { usePage } from '@inertiajs/inertia-react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, InertiaLink } from '@inertiajs/inertia-react';
+import { SelectInput, TextInput } from '@/Components/FormInputs';
+import { fetchDepartments, fetchPositions } from '@/Api/api';
 
 const UserIndex = ({ users }) => {
     const { auth, params } = usePage().props;
     const [searchFormVisible, setSearchFormVisible] = useState(false);
     const [name, setName] = useState(params.name || '');
     const [email, setEmail] = useState(params.email || '');
+    const [departmentId, setDepartmentId] = useState(params.department_id || '');
+    const [positionId, setPositionId] = useState(params.position_id || '');
+    const [departments, setDepartments] = useState([]);
+    const [positions, setPositions] = useState([]);
 
     const toggleForm = () => {
         setSearchFormVisible(!searchFormVisible);
     };
+
+    const fetchInitialData = useCallback(async () => {
+        const [departmentsData, positionsData] = await Promise.all([
+            fetchDepartments(),
+            fetchPositions()
+        ]);
+        setDepartments(departmentsData.departments);
+        setPositions(positionsData.positions);
+    }, []);
+
+    useEffect(() => {
+        fetchInitialData();
+    }, [fetchInitialData]);
 
     return (
         <AuthenticatedLayout
@@ -32,28 +51,38 @@ const UserIndex = ({ users }) => {
                     <div id="searchForm" className="bg-white p-4 shadow rounded-md">
                         <form method="GET" action="/users">
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-                                <div>
-                                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">名前</label>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        id="name"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">メール</label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        id="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                    />
-                                </div>
+                                <TextInput
+                                    id="name"
+                                    name="name"
+                                    label="名前"
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                                <TextInput
+                                    id="email"
+                                    name="email"
+                                    label="メール"
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                                <SelectInput
+                                    id="department_id"
+                                    name="department_id"
+                                    label="部署"
+                                    value={departmentId}
+                                    options={departments}
+                                    onChange={(e) => setDepartmentId(e.target.value)}
+                                />
+                                <SelectInput
+                                    id="position_id"
+                                    name="position_id"
+                                    label="役職"
+                                    value={positionId}
+                                    options={positions}
+                                    onChange={(e) => setPositionId(e.target.value)}
+                                />
                             </div>
                             <div className="mt-4">
                                 <button

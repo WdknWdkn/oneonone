@@ -25,6 +25,7 @@ const Detail = () => {
                 question_id: item.id,
                 question: item.question_text,
                 answer: existingAnswer ? existingAnswer.answer_text : '',
+                type: item.question_type
             };
         });
 

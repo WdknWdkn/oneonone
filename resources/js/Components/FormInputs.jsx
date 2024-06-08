@@ -51,5 +51,4 @@ const TextAreaInput = ({ id, name, label, value, onChange }) => {
     );
 };
 
-
 export { SelectInput, TextInput, TextAreaInput };

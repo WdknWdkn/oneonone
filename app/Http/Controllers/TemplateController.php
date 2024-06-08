@@ -23,31 +23,41 @@ class TemplateController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Templates/Create');
+        return Inertia::render('Templates/Create', ['question_types' => TemplateItem::questionTypes()]);
     }
-
+    
+    /**
+     * 質問テンプレート編集画面
+     */    
+    public function edit(Template $template)
+    {
+        $template->load('templateItems');
+        return Inertia::render('Templates/Edit', [
+            'template' => $template,
+            'question_types' => TemplateItem::questionTypes()
+        ]);
+    }
+    
     /**
      * 質問テンプレート新規登録処理
      */
     public function store(Request $request)
     {
+        // バリデーション
+        $validatedData = $request->validate([
+            'template_name' => 'required|string|max:255',
+            'template_items.*.question_text' => 'required|string',
+            'template_items.*.question_type' => 'required|string|in:' . implode(',', array_column(TemplateItem::questionTypes(), 'value')),
+        ]);
+
         // テンプレートを作成
-        $template = Template::create($request->only('template_name'));
+        $template = Template::create(['template_name' => $validatedData['template_name']]);
+
         // テンプレートに質問を追加
-        foreach ($request->template_items as $item) {
-            // テンプレートに紐づく質問を作成
+        foreach ($validatedData['template_items'] as $item) {
             $template->templateItems()->create($item);
         }
         return redirect()->route('templates.index');
-    }
-
-    /**
-     * 質問テンプレート編集画面
-     */
-    public function edit(Template $template)
-    {
-        $template->load('templateItems');
-        return Inertia::render('Templates/Edit', ['template' => $template]);
     }
 
     /**
@@ -55,9 +65,17 @@ class TemplateController extends Controller
      */
     public function update(Request $request, Template $template)
     {
-        $template->update($request->only('template_name'));
+        // バリデーション
+        $validatedData = $request->validate([
+            'template_name' => 'required|string|max:255',
+            'template_items.*.question_text' => 'required|string',
+            'template_items.*.question_type' => 'required|string|in:' . implode(',', array_column(TemplateItem::questionTypes(), 'value')),
+        ]);
+
+        $template->update(['template_name' => $validatedData['template_name']]);
+
         $template->templateItems()->delete();
-        foreach ($request->template_items as $item) {
+        foreach ($validatedData['template_items'] as $item) {
             $template->templateItems()->create($item);
         }
         return redirect()->route('templates.index');
