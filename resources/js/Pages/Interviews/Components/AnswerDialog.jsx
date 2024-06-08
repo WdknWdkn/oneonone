@@ -1,5 +1,5 @@
 import React from 'react';
-import { SelectInput, TextInput } from '@/Components/FormInputs';
+import { SelectInput, TextInput, TextAreaInput } from '@/Components/FormInputs';
 
 const AnswerDialog = ({
     isDialogOpen,
@@ -38,15 +38,37 @@ const AnswerDialog = ({
                                                 onChange={handleTemplateChange}
                                             />
                                             {answers.map((answer, index) => (
-                                                <TextInput
-                                                    key={index}
-                                                    id={`question_${index}`}
-                                                    name={`question_${index}`}
-                                                    label={answer.question}
-                                                    type="text"
-                                                    value={answer.answer}
-                                                    onChange={(e) => handleAnswerChange(index, e.target.value)}
-                                                />
+                                                <div key={index} className="mt-4">
+                                                    <label className="block text-sm font-medium text-gray-700">
+                                                        {answer.question}
+                                                    </label>
+                                                    {answer.type === 'text' && (
+                                                        <TextInput
+                                                            id={`question_${index}`}
+                                                            name={`question_${index}`}
+                                                            type="text"
+                                                            value={answer.answer}
+                                                            onChange={(e) => handleAnswerChange(index, e.target.value)}
+                                                        />
+                                                    )}
+                                                    {answer.type === 'textarea' && (
+                                                        <TextAreaInput
+                                                            id={`question_${index}`}
+                                                            name={`question_${index}`}
+                                                            value={answer.answer}
+                                                            onChange={(e) => handleAnswerChange(index, e.target.value)}
+                                                        />
+                                                    )}
+                                                    {answer.type === 'number' && (
+                                                        <SelectInput
+                                                            id={`question_${index}`}
+                                                            name={`question_${index}`}
+                                                            value={answer.answer}
+                                                            options={[1, 2, 3, 4].map(num => ({ id: num, name: num }))}
+                                                            onChange={(e) => handleAnswerChange(index, e.target.value)}
+                                                        />
+                                                    )}
+                                                </div>
                                             ))}
                                             <div className="mt-5 sm:mt-6 flex space-x-4">
                                                 <button

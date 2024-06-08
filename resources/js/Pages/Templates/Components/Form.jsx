@@ -1,7 +1,7 @@
 import React from 'react';
-import { TextInput } from '@/Components/FormInputs';
+import { TextInput, SelectInput } from '@/Components/FormInputs';
 
-const Form = ({ template, setTemplate, errors, handleSubmit }) => {
+const Form = ({ template, setTemplate, errors, handleSubmit, questionTypes = [] }) => {
     const handleInputChange = (index, field, value) => {
         const newTemplateItems = [...template.template_items];
         newTemplateItems[index][field] = value;
@@ -50,12 +50,12 @@ const Form = ({ template, setTemplate, errors, handleSubmit }) => {
                     {errors[`template_items.${index}.question_text`] && (
                         <span className="text-red-500 text-sm">{errors[`template_items.${index}.question_text`]}</span>
                     )}
-                    <TextInput
+                    <SelectInput
                         id={`question_type_${index}`}
                         name={`question_type_${index}`}
                         label={`質問の種類 ${index + 1}`}
-                        type="text"
                         value={item.question_type}
+                        options={questionTypes.map(type => ({ id: type.value, name: type.label }))}
                         onChange={(e) => handleInputChange(index, 'question_type', e.target.value)}
                     />
                     {errors[`template_items.${index}.question_type`] && (

@@ -30,6 +30,16 @@ class UserQuery
             $this->query->where('email', 'LIKE', '%' . $email . '%');
         }
 
+        $departmentId = $this->request->input('department_id');
+        if ($departmentId) {
+            $this->query->where('current_department_id', $departmentId);
+        }
+
+        $positionId = $this->request->input('position_id');
+        if ($positionId) {
+            $this->query->where('current_position_id', $positionId);
+        }
+
         // クエリビルダーを返す
         return $this->query;
     }
@@ -39,4 +49,3 @@ class UserQuery
         return $this->params;
     }
 }
-

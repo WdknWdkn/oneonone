@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { usePage } from '@inertiajs/inertia-react';
 import { Head } from '@inertiajs/inertia-react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Inertia, InertiaLink } from '@inertiajs/inertia';
+import { Inertia } from '@inertiajs/inertia';
 import UserInfo from './Components/UserInfo';
 import Interviews from './Components/Interviews';
 import EditModal from './Components/EditModal';

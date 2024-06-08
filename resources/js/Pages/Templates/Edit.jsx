@@ -6,7 +6,7 @@ import { Head } from '@inertiajs/inertia-react';
 import Form from './Components/Form';
 
 const Edit = ({ template: initialTemplate }) => {
-    const { auth, errors } = usePage().props;
+    const { auth, errors, question_types } = usePage().props; // question_typesを取得
     const [template, setTemplate] = useState(initialTemplate);
 
     const handleSubmit = (filteredTemplate) => {
@@ -20,7 +20,13 @@ const Edit = ({ template: initialTemplate }) => {
         >
             <Head title="質問テンプレート編集" />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <Form template={template} setTemplate={setTemplate} errors={errors} handleSubmit={handleSubmit} />
+                <Form
+                    template={template}
+                    setTemplate={setTemplate}
+                    errors={errors}
+                    handleSubmit={handleSubmit}
+                    questionTypes={question_types} // question_typesを渡す
+                />
             </div>
         </AuthenticatedLayout>
     );
