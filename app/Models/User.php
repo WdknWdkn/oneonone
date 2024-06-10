@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,38 +10,19 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'name', 'email', 'password', 'current_department_id', 'current_position_id',
-
+        'name', 'email', 'password', 'current_department_id', 'current_position_id', 'role', 'account_id'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
     
     public function interviewsAsInterviewer()
     {
@@ -54,19 +34,18 @@ class User extends Authenticatable
         return $this->hasMany(Interview::class, 'interviewee_id');
     }
 
-    /**
-     * 部署とのリレーションシップ
-     */
     public function department()
     {
         return $this->belongsTo(UserDepartment::class, 'current_department_id');
     }
     
-    /**
-     * 役職とのリレーションシップ
-     */
     public function position()
     {
         return $this->belongsTo(UserPosition::class, 'current_position_id');
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 }

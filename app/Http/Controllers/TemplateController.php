@@ -6,6 +6,7 @@ use App\Models\Template;
 use App\Models\TemplateItem;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class TemplateController extends Controller
 {
@@ -14,7 +15,9 @@ class TemplateController extends Controller
      */
     public function index()
     {
-        $templates = Template::with('templateItems')->get();
+        $this->ensureAccountId();
+
+        $templates = Template::where('account_id', Auth::user()->account_id)->with('templateItems')->get();
         return Inertia::render('Templates/Index', ['templates' => $templates]);
     }
 
@@ -23,6 +26,8 @@ class TemplateController extends Controller
      */
     public function create()
     {
+        $this->ensureAccountId();
+
         return Inertia::render('Templates/Create', ['question_types' => TemplateItem::questionTypes()]);
     }
     
@@ -31,6 +36,8 @@ class TemplateController extends Controller
      */    
     public function edit(Template $template)
     {
+        $this->ensureAccountId();
+
         $template->load('templateItems');
         return Inertia::render('Templates/Edit', [
             'template' => $template,
@@ -43,6 +50,8 @@ class TemplateController extends Controller
      */
     public function store(Request $request)
     {
+        $this->ensureAccountId();
+
         // バリデーション
         $validatedData = $request->validate([
             'template_name' => 'required|string|max:255',
@@ -51,7 +60,10 @@ class TemplateController extends Controller
         ]);
 
         // テンプレートを作成
-        $template = Template::create(['template_name' => $validatedData['template_name']]);
+        $template = Template::create([
+            'template_name' => $validatedData['template_name'], 
+            'account_id' => Auth::user()->account_id
+        ]);
 
         // テンプレートに質問を追加
         foreach ($validatedData['template_items'] as $item) {
@@ -65,6 +77,8 @@ class TemplateController extends Controller
      */
     public function update(Request $request, Template $template)
     {
+        $this->ensureAccountId();
+
         // バリデーション
         $validatedData = $request->validate([
             'template_name' => 'required|string|max:255',
@@ -86,6 +100,8 @@ class TemplateController extends Controller
      */
     public function destroy(Template $template)
     {
+        $this->ensureAccountId();
+
         $template->delete();
         return redirect()->route('templates.index');
     }

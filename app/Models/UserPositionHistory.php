@@ -9,7 +9,7 @@ class UserPositionHistory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'user_position_id', 'start_date', 'end_date'];
+    protected $fillable = ['user_id', 'user_position_id', 'start_date', 'end_date', 'account_id'];
 
     public function user()
     {
@@ -19,5 +19,10 @@ class UserPositionHistory extends Model
     public function userPosition()
     {
         return $this->belongsTo(UserPosition::class);
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 }

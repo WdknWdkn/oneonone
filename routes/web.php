@@ -6,6 +6,8 @@ use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDepartmentController;
 use App\Http\Controllers\UserPositionController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\NoAccountController;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -38,10 +40,20 @@ Route::middleware('auth')->group(function () {
     
     Route::resource('user-departments', UserDepartmentController::class);
     Route::resource('user-positions', UserPositionController::class);
+
+    Route::resource('accounts', AccountController::class);
+
+    Route::get('/no-account', [NoAccountController::class, 'show'])->name('no-account');
+
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard', [
+        'auth' => [
+            'user' => Auth::user(),
+            'account' => Auth::user()->account,
+        ],
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/api.php';

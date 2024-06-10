@@ -9,5 +9,10 @@ class UserDepartment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'account_id'];
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
 }
