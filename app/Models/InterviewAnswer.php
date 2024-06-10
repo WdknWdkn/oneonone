@@ -9,7 +9,7 @@ class InterviewAnswer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['interview_id', 'template_item_id', 'answer_text'];
+    protected $fillable = ['interview_id', 'template_item_id', 'answer_text', 'account_id'];
 
     public function interview()
     {
@@ -19,5 +19,10 @@ class InterviewAnswer extends Model
     public function templateItem()
     {
         return $this->belongsTo(TemplateItem::class);
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 }

@@ -36,6 +36,7 @@ class InterviewQuery
             $this->query->whereDate('interview_date', '<=', $date_to);
         }
 
-        return $this->query->get();
+        return $this->query;
     }
 }
+

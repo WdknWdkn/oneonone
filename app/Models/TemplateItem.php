@@ -9,18 +9,12 @@ class TemplateItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['template_id', 'question_text', 'question_type'];
+    protected $fillable = ['template_id', 'question_text', 'question_type', 'account_id'];
 
-    /**
-     * 質問の種類
-     */
     const QUESTION_TYPE_TEXT = 'text';
     const QUESTION_TYPE_TEXTAREA = 'textarea';
     const QUESTION_TYPE_NUMBER = 'number';
 
-    /**
-     *   質問の種類の選択肢
-     */
     public static function questionTypes()
     {
         return [
@@ -38,5 +32,10 @@ class TemplateItem extends Model
     public function interviewAnswers()
     {
         return $this->hasMany(InterviewAnswer::class, 'template_item_id');
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 }
