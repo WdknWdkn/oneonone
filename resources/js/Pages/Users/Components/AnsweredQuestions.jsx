@@ -11,10 +11,8 @@ const AnsweredQuestions = ({ answers }) => {
             <table className="min-w-full bg-white">
                     {answers.map((answer, index) => (
                         <tbody key={index}>
-                            <tr className="border-b">
-                                <td className="py-2 px-4 border-b font-semibold">{answer.template_item?.question_text || '不明な質問'}</td>
-                            </tr>
-                            <tr className="border-b">
+                            <tr className="border-b text-left">
+                                <th className="py-2 px-4 border-b font-semibold">{answer.template_item?.question_text || '不明な質問'}</th>
                                 <td className="py-2 px-4 border-b">{answer.answer_text || '未回答'}</td>
                             </tr>
                         </tbody>
