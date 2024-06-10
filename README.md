@@ -25,6 +25,8 @@ erDiagram
         datetime created_at "レコード作成日時"
         datetime updated_at "レコード更新日時"
         varchar role "法人内の役割"
+        int current_department_id FK "現在の部署ID"
+        int current_position_id FK "現在の役職ID"
         int account_id FK "法人ID"
     }
     
