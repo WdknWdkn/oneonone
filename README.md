@@ -8,6 +8,13 @@
 
 ```mermaid
 erDiagram
+    accounts {
+        int id PK "法人の一意なID"
+        varchar name "法人の名前"
+        datetime created_at "レコード作成日時"
+        datetime updated_at "レコード更新日時"
+    }
+
     users {
         int id PK "ユーザーの一意なID"
         varchar name "ユーザーの名前"
@@ -17,8 +24,8 @@ erDiagram
         varchar remember_token ""
         datetime created_at "レコード作成日時"
         datetime updated_at "レコード更新日時"
-        int current_department_id FK "現在の部署ID"
-        int current_position_id FK "現在の役職ID"
+        varchar role "法人内の役割"
+        int account_id FK "法人ID"
     }
     
     interviews {
@@ -34,12 +41,14 @@ erDiagram
         datetime created_at "レコード作成日時"
         int user_department_id FK "面接時の部署ID"
         int user_position_id FK "面接時の役職ID"
+        int account_id FK "面談が関連する法人のID"
     }
     
     templates {
         int id PK "質問テンプレートの一意なID"
         varchar template_name "テンプレートの名前"
         datetime created_at "レコード作成日時"
+        int account_id FK "テンプレートが関連する法人のID"
     }
     
     template_items {
@@ -48,6 +57,7 @@ erDiagram
         text question_text "質問の本文"
         varchar question_type "質問の種類"
         datetime created_at "レコード作成日時"
+        int account_id FK "法人ID"
     }
 
     interview_templates {
@@ -55,6 +65,7 @@ erDiagram
         int interview_id FK "面談のID"
         int template_id FK "質問テンプレートのID"
         datetime created_at "レコード作成日時"
+        int account_id FK "面談テンプレートが関連する法人のID"
     }
 
     interview_answers {
@@ -63,16 +74,19 @@ erDiagram
         int template_item_id FK "質問テンプレート内の質問のID"
         text answer_text "回答の本文"
         datetime created_at "レコード作成日時"
+        int account_id FK "法人ID"
     }
     
     user_departments {
         int id PK "部署の一意なID"
         varchar name "部署の名前"
+        int account_id FK "部署が関連する法人のID"
     }
 
     user_positions {
         int id PK "役職の一意なID"
         varchar name "役職の名前"
+        int account_id FK "役職が関連する法人のID"
     }
 
     user_department_history {
@@ -80,6 +94,7 @@ erDiagram
         int user_department_id FK "部署のID"
         date start_date "開始年月"
         date end_date "終了年月"
+        int account_id FK "法人ID"
     }
 
     user_position_history {
@@ -87,8 +102,18 @@ erDiagram
         int user_position_id FK "役職のID"
         date start_date "開始年月"
         date end_date "終了年月"
+        int account_id FK "法人ID"
     }
 
+    accounts ||--o{ users : "has"
+    accounts ||--o{ interviews : "contains"
+    accounts ||--o{ templates : "contains"
+    accounts ||--o{ interview_templates : "contains"
+    accounts ||--o{ interview_answers : "contains"
+    accounts ||--o{ user_departments : "contains"
+    accounts ||--o{ user_positions : "contains"
+    accounts ||--o{ user_department_history : "contains"
+    accounts ||--o{ user_position_history : "contains"
     users ||--o{ interviews : "has"
     interviews ||--o{ interview_templates : "has"
     interviews ||--o{ interview_answers : "has"
