@@ -7,12 +7,17 @@ use App\Models\Interview;
 use App\Models\InterviewTemplate;
 use App\Models\InterviewAnswer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InterviewAnswerApiController extends Controller
 {
     public function store(Request $request, $id)
     {
-        $interview = Interview::findOrFail($id);
+        if (Auth::user()->account_id === null) {
+            return response()->json(['error' => 'Account not registered'], 403);
+        }
+
+        $interview = Interview::where('account_id', Auth::user()->account_id)->findOrFail($id);
 
         InterviewTemplate::create([
             'interview_id' => $interview->id,
@@ -24,6 +29,7 @@ class InterviewAnswerApiController extends Controller
                 'interview_id' => $interview->id,
                 'template_item_id' => $answer['question_id'],
                 'answer_text' => $answer['answer'],
+                'account_id' => Auth::user()->account_id,
             ]);
         }
 

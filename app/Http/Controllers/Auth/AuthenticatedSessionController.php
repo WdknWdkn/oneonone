@@ -33,6 +33,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // アカウント情報を保持するために、AppServiceProviderで共有データを設定します
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

@@ -9,7 +9,7 @@ class InterviewTemplate extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['interview_id', 'template_id'];
+    protected $fillable = ['interview_id', 'template_id', 'account_id'];
 
     public function interview()
     {
@@ -19,5 +19,10 @@ class InterviewTemplate extends Model
     public function template()
     {
         return $this->belongsTo(Template::class);
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 }

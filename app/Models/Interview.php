@@ -16,8 +16,12 @@ class Interview extends Model
         'interviewee_name',
         'interviewee_id',
         'interview_content',
-        'notes'
+        'notes',
+        'user_department_id',
+        'user_position_id',
+        'account_id'
     ];
+    
     protected $dates = ['interview_date'];
     
     public function interviewer()
@@ -38,5 +42,20 @@ class Interview extends Model
     public function interviewAnswers()
     {
         return $this->hasMany(InterviewAnswer::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(UserDepartment::class, 'user_department_id');
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(UserPosition::class, 'user_position_id');
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 }

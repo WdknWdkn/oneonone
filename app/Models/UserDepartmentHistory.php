@@ -9,7 +9,7 @@ class UserDepartmentHistory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'user_department_id', 'start_date', 'end_date'];
+    protected $fillable = ['user_id', 'user_department_id', 'start_date', 'end_date', 'account_id'];
 
     public function user()
     {
@@ -19,5 +19,10 @@ class UserDepartmentHistory extends Model
     public function userDepartment()
     {
         return $this->belongsTo(UserDepartment::class);
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 }

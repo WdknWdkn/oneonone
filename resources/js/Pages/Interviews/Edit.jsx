@@ -18,7 +18,6 @@ const InterviewEdit = ({ interview: initialInterview }) => {
         setInterview(prevInterview => ({
             ...prevInterview,
             [name]: value,
-            // インタビューワーIDやインタビューイーIDが変更された場合、名前も更新する
             ...(name === 'interviewer_id' && { interviewer_name: users.find(user => user.id == value)?.name || '' }),
             ...(name === 'interviewee_id' && { interviewee_name: users.find(user => user.id == value)?.name || '' }),
         }));
