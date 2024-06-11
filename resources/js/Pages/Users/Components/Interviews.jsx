@@ -9,7 +9,7 @@ const Interviews = ({ loading, interviews }) => (
             {loading ? (
                 <p>読み込み中...</p>
             ) : (
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto py-4">
                     <div className="inline-block min-w-full align-middle">
                         <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <table className="min-w-full divide-y divide-gray-200">

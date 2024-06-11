@@ -7,6 +7,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDepartmentController;
 use App\Http\Controllers\UserPositionController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\RatingMasterController;
+use App\Http\Controllers\UserRatingController;
+
 use App\Http\Controllers\NoAccountController;
 
 use Illuminate\Foundation\Application;
@@ -42,6 +45,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('user-positions', UserPositionController::class);
 
     Route::resource('accounts', AccountController::class);
+
+    Route::resource('rating-masters', RatingMasterController::class);
+
+    Route::get('users/{user}/ratings', [UserRatingController::class, 'index'])->name('user-ratings.index');
+    Route::get('users/{user}/ratings/create', [UserRatingController::class, 'create'])->name('user-ratings.create');
+    Route::post('users/{user}/ratings', [UserRatingController::class, 'store'])->name('user-ratings.store');
+    Route::get('users/{user}/ratings/{rating}/edit', [UserRatingController::class, 'edit'])->name('user-ratings.edit');
+    Route::put('users/{user}/ratings/{rating}', [UserRatingController::class, 'update'])->name('user-ratings.update');
+    Route::delete('users/{user}/ratings/{rating}', [UserRatingController::class, 'destroy'])->name('user-ratings.destroy');    
 
     Route::get('/no-account', [NoAccountController::class, 'show'])->name('no-account');
 

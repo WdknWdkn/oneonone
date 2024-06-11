@@ -48,4 +48,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Account::class);
     }
+
+    public function userRatings()
+    {
+        return $this->hasMany(UserRating::class);
+    }
+    
 }

@@ -8,6 +8,7 @@
 
 ```mermaid
 erDiagram
+
     accounts {
         int id PK "法人の一意なID"
         varchar name "法人の名前"
@@ -25,8 +26,6 @@ erDiagram
         datetime created_at "レコード作成日時"
         datetime updated_at "レコード更新日時"
         varchar role "法人内の役割"
-        int current_department_id FK "現在の部署ID"
-        int current_position_id FK "現在の役職ID"
         int account_id FK "法人ID"
     }
     
@@ -106,6 +105,25 @@ erDiagram
         date end_date "終了年月"
         int account_id FK "法人ID"
     }
+    
+    rating_masters {
+        int id PK "評価マスターの一意なID"
+        varchar rating_name "評価の名前"
+        text description "評価の説明"
+        datetime created_at "レコード作成日時"
+        datetime updated_at "レコード更新日時"
+        int account_id FK "法人ID"
+    }
+    
+    user_ratings {
+        int id PK "評価の一意なID"
+        int user_id FK "評価を受けたユーザーのID"
+        int rating_master_id FK "評価マスターのID"
+        date rating_date "評価日"
+        datetime created_at "レコード作成日時"
+        datetime updated_at "レコード更新日時"
+        int account_id FK "法人ID"
+    }
 
     accounts ||--o{ users : "has"
     accounts ||--o{ interviews : "contains"
@@ -116,18 +134,30 @@ erDiagram
     accounts ||--o{ user_positions : "contains"
     accounts ||--o{ user_department_history : "contains"
     accounts ||--o{ user_position_history : "contains"
+    accounts ||--o{ rating_masters : "contains"
+    accounts ||--o{ user_ratings : "contains"
+    
     users ||--o{ interviews : "has"
-    interviews ||--o{ interview_templates : "has"
-    interviews ||--o{ interview_answers : "has"
-    templates ||--o{ template_items : "has"
-    templates ||--o{ interview_templates : "provides"
-    template_items ||--o{ interview_answers : "provides"
     users ||--o{ user_department_history : "has"
     users ||--o{ user_position_history : "has"
+    users ||--o{ user_ratings : "receives"
+    
+    interviews ||--o{ interview_templates : "has"
+    interviews ||--o{ interview_answers : "has"
+    
+    templates ||--o{ template_items : "has"
+    templates ||--o{ interview_templates : "provides"
+    
+    template_items ||--o{ interview_answers : "provides"
+    
     user_departments ||--o{ user_department_history : "contains"
     user_positions ||--o{ user_position_history : "contains"
+    
+    rating_masters ||--o{ user_ratings : "defines"
+    
     interviews }o--|| user_departments : "contains"
     interviews }o--|| user_positions : "contains"
+    
     users }o--|| user_departments : "belongs to current"
     users }o--|| user_positions : "belongs to current"
 
