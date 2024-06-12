@@ -3,6 +3,7 @@ import { Inertia } from '@inertiajs/inertia';
 import { usePage, InertiaLink } from '@inertiajs/inertia-react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/inertia-react';
+import { SelectInput, TextInput, TextAreaInput } from '@/Components/FormInputs';
 
 const Edit = ({ user, userRating, ratingMasters }) => {
     const { auth, errors } = usePage().props;
@@ -26,36 +27,32 @@ const Edit = ({ user, userRating, ratingMasters }) => {
             <Head title="評価編集" />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label htmlFor="rating_master_id" className="block text-sm font-medium text-gray-700">評価名</label>
-                        <select
-                            id="rating_master_id"
-                            name="rating_master_id"
-                            value={rating.rating_master_id}
-                            onChange={handleChange}
-                            className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        >
-                            <option value="">選択してください</option>
-                            {ratingMasters.map((master) => (
-                                <option key={master.id} value={master.id}>
-                                    {master.rating_name}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.rating_master_id && <span className="text-red-500 text-sm">{errors.rating_master_id}</span>}
-                    </div>
-                    <div>
-                        <label htmlFor="rating_date" className="block text-sm font-medium text-gray-700">評価日</label>
-                        <input
-                            id="rating_date"
-                            name="rating_date"
-                            type="date"
-                            value={rating.rating_date}
-                            onChange={handleChange}
-                            className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                        {errors.rating_date && <span className="text-red-500 text-sm">{errors.rating_date}</span>}
-                    </div>
+                    <SelectInput
+                        id="rating_master_id"
+                        name="rating_master_id"
+                        label="評価名"
+                        value={rating.rating_master_id}
+                        options={ratingMasters.map((master) => ({ id: master.id, name: master.rating_name }))}
+                        onChange={handleChange}
+                    />
+                    {errors.rating_master_id && <span className="text-red-500 text-sm">{errors.rating_master_id}</span>}
+                    <TextInput
+                        id="rating_date"
+                        name="rating_date"
+                        label="評価日"
+                        type="date"
+                        value={rating.rating_date}
+                        onChange={handleChange}
+                    />
+                    {errors.rating_date && <span className="text-red-500 text-sm">{errors.rating_date}</span>}
+                    <TextAreaInput
+                        id="reason"
+                        name="reason"
+                        label="評価理由"
+                        value={rating.reason}
+                        onChange={handleChange}
+                    />
+                    {errors.reason && <span className="text-red-500 text-sm">{errors.reason}</span>}
                     <div className="flex space-x-4">
                         <button
                             type="submit"

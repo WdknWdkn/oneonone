@@ -15,6 +15,7 @@ class UserRating extends Model
         'user_id',
         'rating_master_id',
         'rating_date',
+        'reason',
         'account_id',
     ];
 

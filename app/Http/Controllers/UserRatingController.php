@@ -40,12 +40,14 @@ class UserRatingController extends Controller
         $validated = $request->validate([
             'rating_master_id' => 'required|exists:rating_masters,id',
             'rating_date' => 'required|date',
+            'reason' => 'nullable|string',
         ]);
 
         UserRating::create([
             'user_id' => $user->id,
             'rating_master_id' => $validated['rating_master_id'],
             'rating_date' => $validated['rating_date'],
+            'reason' => $validated['reason'],
             'account_id' => Auth::user()->account_id,
         ]);
 
@@ -79,6 +81,7 @@ class UserRatingController extends Controller
         $validated = $request->validate([
             'rating_master_id' => 'required|exists:rating_masters,id',
             'rating_date' => 'required|date',
+            'reason' => 'nullable|string',
         ]);
 
         $rating->update($validated);
