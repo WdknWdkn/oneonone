@@ -6,6 +6,7 @@ import { Inertia } from '@inertiajs/inertia';
 import UserInfo from './Components/UserInfo';
 import Interviews from './Components/Interviews';
 import EditModal from './Components/EditModal';
+import UserRelatedInfo from './Components/UserRelatedInfo';
 import { fetchDepartments, fetchPositions, fetchInterviews } from '@/Api/api';
 
 const UserDetail = () => {
@@ -66,10 +67,27 @@ const UserDetail = () => {
             <Head title="ユーザー詳細" />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <UserInfo user={user} onDepartmentEdit={() => setIsDepartmentModalOpen(true)} onPositionEdit={() => setIsPositionModalOpen(true)} />
+                <UserRelatedInfo userId={user.id} />
                 <Interviews loading={loading} interviews={interviews} />
             </div>
-            <EditModal isOpen={isDepartmentModalOpen} onClose={() => setIsDepartmentModalOpen(false)} title="部署" options={departments} selectedValue={selectedDepartment} onChange={setSelectedDepartment} onSave={handleDepartmentSave} />
-            <EditModal isOpen={isPositionModalOpen} onClose={() => setIsPositionModalOpen(false)} title="役職" options={positions} selectedValue={selectedPosition} onChange={setSelectedPosition} onSave={handlePositionSave} />
+            <EditModal
+                isOpen={isDepartmentModalOpen}
+                onClose={() => setIsDepartmentModalOpen(false)}
+                title="部署"
+                options={departments}
+                selectedValue={selectedDepartment}
+                onChange={setSelectedDepartment}
+                onSave={handleDepartmentSave}
+            />
+            <EditModal
+                isOpen={isPositionModalOpen}
+                onClose={() => setIsPositionModalOpen(false)}
+                title="役職"
+                options={positions}
+                selectedValue={selectedPosition}
+                onChange={setSelectedPosition}
+                onSave={handlePositionSave}
+            />
         </AuthenticatedLayout>
     );
 };

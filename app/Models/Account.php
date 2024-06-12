@@ -60,4 +60,14 @@ class Account extends Model
     {
         return $this->hasMany(UserPositionHistory::class);
     }
+    
+    public function ratingMasters()
+    {
+        return $this->hasMany(RatingMaster::class);
+    }
+    
+    public function userRatings()
+    {
+        return $this->hasMany(UserRating::class);
+    }
 }
