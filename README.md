@@ -125,6 +125,7 @@ erDiagram
         datetime created_at "レコード作成日時"
         datetime updated_at "レコード更新日時"
         int account_id FK "法人ID"
+        text reason "評価の理由"
     }
 
     accounts ||--o{ users : "has"

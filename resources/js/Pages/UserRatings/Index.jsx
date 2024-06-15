@@ -27,6 +27,7 @@ const Index = ({ user, userRatings }) => {
                                 <tr>
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">評価名</th>
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">評価日</th>
+                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">評価理由</th>
                                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
                                 </tr>
                             </thead>
@@ -35,6 +36,7 @@ const Index = ({ user, userRatings }) => {
                                     <tr key={rating.id}>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{rating.rating_master.rating_name}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{rating.rating_date}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{rating.reason}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <InertiaLink
                                                 href={`/users/${user.id}/ratings/${rating.id}/edit`}
