@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,6 +8,11 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+
+    // Role constants
+    const ROLE_ADMIN = 'admin';
+    const ROLE_MANAGER = 'manager';
+    const ROLE_USER = 'user';
 
     protected $fillable = [
         'name', 'email', 'password', 'current_department_id', 'current_position_id', 'role', 'account_id'
@@ -53,5 +57,27 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserRating::class);
     }
-    
+
+    public static function roleOptions()
+    {
+        return [
+            ['id' => self::ROLE_ADMIN, 'name' => 'システム管理者'],
+            ['id' => self::ROLE_MANAGER, 'name' => '管理者'],
+            ['id' => self::ROLE_USER, 'name' => '一般'],
+        ];
+    }
+
+    public static function getRoleLabel($role)
+    {
+        switch ($role) {
+            case self::ROLE_ADMIN:
+                return 'システム管理者';
+            case self::ROLE_MANAGER:
+                return '管理者';
+            case self::ROLE_USER:
+                return '一般';
+            default:
+                return '不明';
+        }
+    }
 }

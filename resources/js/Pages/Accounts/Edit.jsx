@@ -21,9 +21,9 @@ const Edit = ({ account: initialAccount }) => {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">法人編集</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">アカウント編集</h2>}
         >
-            <Head title="法人編集" />
+            <Head title="アカウント編集" />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
