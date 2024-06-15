@@ -9,9 +9,9 @@ const Index = ({ accounts }) => {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">法人一覧</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">アカウント一覧</h2>}
         >
-            <Head title="法人一覧" />
+            <Head title="アカウント一覧" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="py-6">
@@ -35,12 +35,22 @@ const Index = ({ accounts }) => {
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {accounts.map(account => (
                                     <tr key={account.id}>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{account.id}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{account.name}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            {account.id}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {account.name}
+                                        </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <InertiaLink
+                                                href={`/accounts/${account.id}`}
+                                                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-2"
+                                            >
+                                                詳細
+                                            </InertiaLink>
+                                            <InertiaLink
                                                 href={`/accounts/${account.id}/edit`}
-                                                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mr-2"
+                                                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 mr-2"
                                             >
                                                 編集
                                             </InertiaLink>
@@ -49,7 +59,7 @@ const Index = ({ accounts }) => {
                                                 <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]').content} />
                                                 <button
                                                     type="submit"
-                                                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                                                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                                 >
                                                     削除
                                                 </button>

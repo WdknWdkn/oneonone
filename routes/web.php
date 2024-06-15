@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\InterviewController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TemplateController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserDepartmentController;
-use App\Http\Controllers\UserPositionController;
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\RatingMasterController;
-use App\Http\Controllers\UserRatingController;
-
-use App\Http\Controllers\NoAccountController;
-
+use App\Http\Controllers\{
+    AccountController,
+    AccountUserController,
+    InterviewController,
+    NoAccountController,
+    ProfileController,
+    RatingMasterController,
+    TemplateController,
+    UserController,
+    UserDepartmentController,
+    UserPositionController,
+    UserRatingController
+};
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,36 +28,50 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::resource('interviews', InterviewController::class);
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     Route::resource('templates', TemplateController::class);
-
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-    Route::get('/api/users/{user}/interviews', [UserController::class, 'getUserInterviews']);
-
-    Route::put('/users/{user}/update-department', [UserController::class, 'updateDepartment'])->name('users.update-department');
-    Route::put('/users/{user}/update-position', [UserController::class, 'updatePosition'])->name('users.update-position');
-    
     Route::resource('user-departments', UserDepartmentController::class);
     Route::resource('user-positions', UserPositionController::class);
-
-    Route::resource('accounts', AccountController::class);
-
     Route::resource('rating-masters', RatingMasterController::class);
 
-    Route::get('users/{user}/ratings', [UserRatingController::class, 'index'])->name('user-ratings.index');
-    Route::get('users/{user}/ratings/create', [UserRatingController::class, 'create'])->name('user-ratings.create');
-    Route::post('users/{user}/ratings', [UserRatingController::class, 'store'])->name('user-ratings.store');
-    Route::get('users/{user}/ratings/{rating}/edit', [UserRatingController::class, 'edit'])->name('user-ratings.edit');
-    Route::put('users/{user}/ratings/{rating}', [UserRatingController::class, 'update'])->name('user-ratings.update');
-    Route::delete('users/{user}/ratings/{rating}', [UserRatingController::class, 'destroy'])->name('user-ratings.destroy');    
+    Route::prefix('accounts')->group(function () {
+        Route::get('/', [AccountController::class, 'index'])->name('accounts.index');
+        Route::get('/create', [AccountController::class, 'create'])->name('accounts.create');
+        Route::post('/', [AccountController::class, 'store'])->name('accounts.store');
+        Route::get('/{account}', [AccountController::class, 'show'])->name('accounts.show');
+        Route::get('/{account}/edit', [AccountController::class, 'edit'])->name('accounts.edit');
+        Route::patch('/{account}', [AccountController::class, 'update'])->name('accounts.update');
+        Route::delete('/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
+    });
+
+    Route::prefix('accounts/{account}/users')->group(function () {
+        Route::get('/{user}/edit', [AccountUserController::class, 'edit'])->name('account.user.edit');
+        Route::put('/{user}', [AccountUserController::class, 'update'])->name('account.user.update');
+    });
+
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('/{user}', [UserController::class, 'show'])->name('users.show');
+        Route::get('/{user}/interviews', [UserController::class, 'getUserInterviews'])->name('users.interviews');
+        Route::put('/{user}/update-department', [UserController::class, 'updateDepartment'])->name('users.update-department');
+        Route::put('/{user}/update-position', [UserController::class, 'updatePosition'])->name('users.update-position');
+
+        Route::prefix('{user}/ratings')->group(function () {
+            Route::get('/', [UserRatingController::class, 'index'])->name('user-ratings.index');
+            Route::get('/create', [UserRatingController::class, 'create'])->name('user-ratings.create');
+            Route::post('/', [UserRatingController::class, 'store'])->name('user-ratings.store');
+            Route::get('/{rating}/edit', [UserRatingController::class, 'edit'])->name('user-ratings.edit');
+            Route::put('/{rating}', [UserRatingController::class, 'update'])->name('user-ratings.update');
+            Route::delete('/{rating}', [UserRatingController::class, 'destroy'])->name('user-ratings.destroy');
+        });
+    });
 
     Route::get('/no-account', [NoAccountController::class, 'show'])->name('no-account');
-
 });
 
 Route::get('/dashboard', function () {

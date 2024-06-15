@@ -2,11 +2,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class AccountController extends Controller
 {
+    public function __construct()
+    {
+    }
+
     public function index()
     {
         $accounts = Account::all();
@@ -50,5 +55,17 @@ class AccountController extends Controller
         $account->delete();
 
         return redirect()->route('accounts.index')->with('success', '法人が削除されました。');
+    }
+
+    public function show(Account $account)
+    {
+        $users = User::where('account_id', $account->id)->get()->map(function($user) {
+            $user->role_label = User::getRoleLabel($user->role);
+            return $user;
+        });
+        return Inertia::render('Accounts/Detail', [
+            'account' => $account,
+            'users' => $users,
+        ]);
     }
 }
