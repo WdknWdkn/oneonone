@@ -71,6 +71,8 @@ Route::middleware('auth')->group(function () {
         });
     });
 
+    Route::get('/api/users/{id}/interviews', [UserController::class, 'getUserInterviews']);
+
     Route::get('/no-account', [NoAccountController::class, 'show'])->name('no-account');
 });
 

@@ -44,7 +44,7 @@ class UserController extends Controller
     public function getUserInterviews($id)
     {
         $this->ensureAccountId();
-
+        
         $interviews = Interview::with([
             'interviewer',
             'interviewee',

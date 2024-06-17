@@ -16,6 +16,7 @@ export default function Dashboard({ auth }) {
                         <div className="p-6 text-gray-900">
                             <p>You're logged in!</p>
                             <p>User: {auth.user.name}</p>
+                            <p>User Role: {auth.user.role}</p>
                             <p>Account: {auth.account?.name}</p>
                         </div>
                     </div>
