@@ -9,7 +9,9 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    // Role constants
+    /**
+     * User roles
+     */
     const ROLE_ADMIN = 'admin';
     const ROLE_MANAGER = 'manager';
     const ROLE_USER = 'user';
@@ -58,6 +60,9 @@ class User extends Authenticatable
         return $this->hasMany(UserRating::class);
     }
 
+    /**
+     * Get role options
+     */
     public static function roleOptions()
     {
         return [
@@ -67,6 +72,9 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Get role label
+     */
     public static function getRoleLabel($role)
     {
         switch ($role) {
