@@ -15,10 +15,15 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->notEnsureUser();
+
+        $this->ensureAccountId();
+    }
+
     public function index(Request $request)
     {
-        $this->ensureAccountId();
-
         $userQuery = new UserQuery($request);
         $users = $userQuery->apply()->where('account_id', Auth::user()->account_id)->with(['department', 'position'])->get();
         $params = $userQuery->getParams();
@@ -31,8 +36,6 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $this->ensureAccountId();
-
         if ($user->account_id !== Auth::user()->account_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -43,8 +46,6 @@ class UserController extends Controller
 
     public function getUserInterviews($id)
     {
-        $this->ensureAccountId();
-        
         $interviews = Interview::with([
             'interviewer',
             'interviewee',
@@ -59,8 +60,6 @@ class UserController extends Controller
 
     public function updatePosition(Request $request, User $user)
     {
-        $this->ensureAccountId();
-
         $request->validate([
             'position_id' => 'required|exists:user_positions,id',
         ]);
@@ -91,8 +90,6 @@ class UserController extends Controller
 
     public function updateDepartment(Request $request, User $user)
     {
-        $this->ensureAccountId();
-
         $request->validate([
             'department_id' => 'required|exists:user_departments,id',
         ]);

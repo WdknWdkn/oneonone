@@ -9,25 +9,26 @@ use Illuminate\Support\Facades\Auth;
 
 class UserPositionController extends Controller
 {
+    public function __construct()
+    {
+        $this->notEnsureUser();
+
+        $this->ensureAccountId();
+    }
+
     public function index()
     {
-        $this->ensureAccountId();
-
         $userPositions = UserPosition::where('account_id', Auth::user()->account_id)->get();
         return Inertia::render('UserPositions/Index', ['userPositions' => $userPositions]);
     }
 
     public function create()
     {
-        $this->ensureAccountId();
-
         return Inertia::render('UserPositions/Create');
     }
 
     public function store(Request $request)
     {
-        $this->ensureAccountId();
-
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
@@ -39,8 +40,6 @@ class UserPositionController extends Controller
 
     public function edit(UserPosition $userPosition)
     {
-        $this->ensureAccountId();
-
         if ($userPosition->account_id !== Auth::user()->account_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -50,8 +49,6 @@ class UserPositionController extends Controller
 
     public function update(Request $request, UserPosition $userPosition)
     {
-        $this->ensureAccountId();
-
         if ($userPosition->account_id !== Auth::user()->account_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -67,8 +64,6 @@ class UserPositionController extends Controller
 
     public function destroy(UserPosition $userPosition)
     {
-        $this->ensureAccountId();
-
         if ($userPosition->account_id !== Auth::user()->account_id) {
             abort(403, 'Unauthorized action.');
         }

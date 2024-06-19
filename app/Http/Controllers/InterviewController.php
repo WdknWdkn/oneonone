@@ -11,18 +11,19 @@ use Illuminate\Support\Facades\Auth;
 
 class InterviewController extends Controller
 {
-    public function index()
+    public function __construct()
     {
         $this->ensureAccountId();
+    }
 
+    public function index()
+    {
         $users = User::where('account_id', Auth::user()->account_id)->get();
         return Inertia::render('Interviews/Index', ['users' => $users]);
     }
 
     public function create()
     {
-        $this->ensureAccountId();
-
         $users = User::where('account_id', Auth::user()->account_id)->get();
         $interview = new Interview();
         return Inertia::render('Interviews/Create', ['users' => $users, 'interview' => $interview]);
@@ -30,8 +31,6 @@ class InterviewController extends Controller
 
     public function store(StoreInterviewRequest $request)
     {
-        $this->ensureAccountId();
-
         $interview = new Interview($request->validated());
         $interview->account_id = Auth::user()->account_id;
         $interview->save();
@@ -41,8 +40,6 @@ class InterviewController extends Controller
 
     public function edit(string $id)
     {
-        $this->ensureAccountId();
-
         $interview = Interview::where('account_id', Auth::user()->account_id)->findOrFail($id);
         $users = User::where('account_id', Auth::user()->account_id)->get();
         return Inertia::render('Interviews/Edit', ['users' => $users, 'interview' => $interview]);
@@ -50,8 +47,6 @@ class InterviewController extends Controller
 
     public function update(StoreInterviewRequest $request, string $id)
     {
-        $this->ensureAccountId();
-
         $interview = Interview::where('account_id', Auth::user()->account_id)->findOrFail($id);
         $interview->update($request->validated());
 
@@ -60,8 +55,6 @@ class InterviewController extends Controller
 
     public function show(string $id)
     {
-        $this->ensureAccountId();
-
         $interview = Interview::with([
             'interviewer',
             'interviewee',

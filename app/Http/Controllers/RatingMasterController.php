@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class RatingMasterController extends Controller
 {
+    public function __construct()
+    {
+        $this->notEnsureUser();
+
+        $this->ensureAccountId();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +23,6 @@ class RatingMasterController extends Controller
      */
     public function index()
     {
-        $this->ensureAccountId();
-
         $ratingMasters = RatingMaster::where('account_id', Auth::user()->account_id)->get();
         return Inertia::render('RatingMasters/Index', [
             'ratingMasters' => $ratingMasters,
@@ -31,8 +36,6 @@ class RatingMasterController extends Controller
      */
     public function create()
     {
-        $this->ensureAccountId();
-
         return Inertia::render('RatingMasters/Create');
     }
 
@@ -44,8 +47,6 @@ class RatingMasterController extends Controller
      */
     public function store(Request $request)
     {
-        $this->ensureAccountId();
-
         $validated = $request->validate([
             'rating_name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -64,8 +65,6 @@ class RatingMasterController extends Controller
      */
     public function edit(RatingMaster $ratingMaster)
     {
-        $this->ensureAccountId();
-
         if ($ratingMaster->account_id !== Auth::user()->account_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -84,7 +83,6 @@ class RatingMasterController extends Controller
      */
     public function update(Request $request, RatingMaster $ratingMaster)
     {
-        $this->ensureAccountId();
 
         if ($ratingMaster->account_id !== Auth::user()->account_id) {
             abort(403, 'Unauthorized action.');
@@ -108,8 +106,6 @@ class RatingMasterController extends Controller
      */
     public function destroy(RatingMaster $ratingMaster)
     {
-        $this->ensureAccountId();
-
         if ($ratingMaster->account_id !== Auth::user()->account_id) {
             abort(403, 'Unauthorized action.');
         }
