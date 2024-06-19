@@ -12,16 +12,13 @@ class AccountUserController extends Controller
 {
     public function __construct()
     {
+        $this->ensureAdmin();
+
+        $this->ensureAccountId();
     }
 
     public function edit(Account $account, User $user)
     {
-        $this->ensureAccountId();
-
-        if ($user->account_id !== Auth::user()->account_id) {
-            abort(403, 'Unauthorized action.');
-        }
-
         return Inertia::render('Accounts/UserEdit', [
             'user' => $user,
             'roleOptions' => User::roleOptions(),
@@ -30,12 +27,6 @@ class AccountUserController extends Controller
 
     public function update(Request $request, Account $account, User $user)
     {
-        $this->ensureAccountId();
-
-        if ($user->account_id !== Auth::user()->account_id) {
-            abort(403, 'Unauthorized action.');
-        }
-
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
@@ -50,10 +41,4 @@ class AccountUserController extends Controller
                          ->with('success', 'ユーザー情報が更新されました。');
     }
 
-    protected function ensureAccountId()
-    {
-        if (Auth::user()->account_id === null) {
-            return redirect()->route('no-account');
-        }
-    }
 }

@@ -10,6 +10,7 @@ class AccountController extends Controller
 {
     public function __construct()
     {
+        $this->ensureAdmin();
     }
 
     public function index()

@@ -10,13 +10,18 @@ use Illuminate\Support\Facades\Auth;
 
 class TemplateController extends Controller
 {
+    public function __construct()
+    {
+        $this->notEnsureUser();
+
+        $this->ensureAccountId();
+    }
+
     /**
      * 質問テンプレート一覧画面
      */
     public function index()
     {
-        $this->ensureAccountId();
-
         $templates = Template::where('account_id', Auth::user()->account_id)->with('templateItems')->get();
         return Inertia::render('Templates/Index', ['templates' => $templates]);
     }
@@ -26,8 +31,6 @@ class TemplateController extends Controller
      */
     public function create()
     {
-        $this->ensureAccountId();
-
         return Inertia::render('Templates/Create', ['question_types' => TemplateItem::questionTypes()]);
     }
     
@@ -36,8 +39,6 @@ class TemplateController extends Controller
      */    
     public function edit(Template $template)
     {
-        $this->ensureAccountId();
-
         $template->load('templateItems');
         return Inertia::render('Templates/Edit', [
             'template' => $template,
@@ -50,8 +51,6 @@ class TemplateController extends Controller
      */
     public function store(Request $request)
     {
-        $this->ensureAccountId();
-
         // バリデーション
         $validatedData = $request->validate([
             'template_name' => 'required|string|max:255',
@@ -77,8 +76,6 @@ class TemplateController extends Controller
      */
     public function update(Request $request, Template $template)
     {
-        $this->ensureAccountId();
-
         // バリデーション
         $validatedData = $request->validate([
             'template_name' => 'required|string|max:255',
@@ -100,8 +97,6 @@ class TemplateController extends Controller
      */
     public function destroy(Template $template)
     {
-        $this->ensureAccountId();
-
         $template->delete();
         return redirect()->route('templates.index');
     }

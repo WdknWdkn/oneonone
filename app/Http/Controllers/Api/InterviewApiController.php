@@ -19,6 +19,12 @@ class InterviewApiController extends Controller
         try {
             // クエリビルダーを取得
             $query = (new InterviewQuery($request))->apply();
+
+            // ユーザーの役割に応じてフィルタリング
+            if (Auth::user()->role === 'user') {
+                $query->where('interviewer_id', Auth::user()->id);
+            }
+
             // account_id でフィルタリングし、インタビューを取得
             $interviews = $query->where('account_id', Auth::user()->account_id)->get();
             return response()->json(['interviews' => $interviews]);
