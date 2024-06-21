@@ -5,20 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class AccountUserController extends Controller
 {
     public function __construct()
     {
-        $this->ensureAdmin();
-
         $this->ensureAccountId();
     }
 
     public function edit(Account $account, User $user)
     {
+        $this->authorizeAction($account->id);
+
         return Inertia::render('Accounts/UserEdit', [
             'user' => $user,
             'roleOptions' => User::roleOptions(),
@@ -27,6 +27,8 @@ class AccountUserController extends Controller
 
     public function update(Request $request, Account $account, User $user)
     {
+        $this->authorizeAction($account->id);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
@@ -40,5 +42,4 @@ class AccountUserController extends Controller
         return redirect()->route('accounts.show', ['account' => $user->account_id])
                          ->with('success', 'ユーザー情報が更新されました。');
     }
-
 }

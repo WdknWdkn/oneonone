@@ -12,7 +12,6 @@ class UserDepartmentController extends Controller
     public function __construct()
     {
         $this->notEnsureUser();
-
         $this->ensureAccountId();
     }
 
@@ -40,18 +39,13 @@ class UserDepartmentController extends Controller
 
     public function edit(UserDepartment $userDepartment)
     {
-        if ($userDepartment->account_id !== Auth::user()->account_id) {
-            abort(403, 'Unauthorized action.');
-        }
-
+        $this->authorizeAction($userDepartment->account_id);
         return Inertia::render('UserDepartments/Edit', ['userDepartment' => $userDepartment]);
     }
 
     public function update(Request $request, UserDepartment $userDepartment)
     {
-        if ($userDepartment->account_id !== Auth::user()->account_id) {
-            abort(403, 'Unauthorized action.');
-        }
+        $this->authorizeAction($userDepartment->account_id);
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -64,10 +58,7 @@ class UserDepartmentController extends Controller
 
     public function destroy(UserDepartment $userDepartment)
     {
-        if ($userDepartment->account_id !== Auth::user()->account_id) {
-            abort(403, 'Unauthorized action.');
-        }
-
+        $this->authorizeAction($userDepartment->account_id);
         $userDepartment->delete();
 
         return redirect()->route('user-departments.index')->with('success', '部署が削除されました。');

@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{account}/edit', [AccountController::class, 'edit'])->name('accounts.edit');
         Route::patch('/{account}', [AccountController::class, 'update'])->name('accounts.update');
         Route::delete('/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
+        Route::post('/{account}/link-user', [AccountController::class, 'linkUser'])->name('accounts.link-user'); // 追加
     });
 
     Route::prefix('accounts/{account}/users')->group(function () {

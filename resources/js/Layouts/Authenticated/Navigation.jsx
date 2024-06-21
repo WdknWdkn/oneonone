@@ -26,12 +26,10 @@ const Navigation = ({ user }) => (
                 <NavLink href={route('templates.index')} active={route().current('templates.index')}>
                     Template
                 </NavLink>
+                <NavLink href={route('accounts.index')} active={route().current('accounts.index')}>
+                    Account
+                </NavLink>
             </>
-        )}
-        {user.role === 'admin' && (
-            <NavLink href={route('accounts.index')} active={route().current('accounts.index')}>
-                Account
-            </NavLink>
         )}
     </div>
 );
