@@ -4,29 +4,24 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Models\Interview;
+use App\Models\Template;
+use App\Models\InterviewAnswer;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Database\Factories\Traits\HasAccount;
 
 class InterviewFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+    use HasAccount;
+
     protected $model = Interview::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
         $interviewer = User::factory()->create();
         $interviewee = User::factory()->create();
 
         return [
-            'interview_date' => fake()->date(),
+            'interview_date' => fake()->dateTimeBetween('-1 month', '+1 month'),
             'interviewee_name' => $interviewee->name,
             'interviewee_id' => $interviewee->id,
             'interviewer_name' => $interviewer->name,
@@ -34,5 +29,22 @@ class InterviewFactory extends Factory
             'interview_content' => fake()->sentence(),
             'notes' => fake()->sentence(),
         ];
+    }
+
+    public function withAnswers($template = null)
+    {
+        return $this->afterCreating(function (Interview $interview) use ($template) {
+            $template = $template ?? Template::factory()->withItems()->create([
+                'account_id' => $interview->account_id
+            ]);
+            
+            foreach ($template->items as $item) {
+                InterviewAnswer::factory()->create([
+                    'interview_id' => $interview->id,
+                    'template_item_id' => $item->id,
+                    'account_id' => $interview->account_id,
+                ]);
+            }
+        });
     }
 }
