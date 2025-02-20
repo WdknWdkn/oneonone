@@ -47,8 +47,8 @@ class TestDataGenerationTest extends TestCase
                 'interviewee_id' => $user->id,
             ]);
             
-        $this->assertNotNull($interview->answers);
-        $this->assertNotEmpty($interview->answers);
+        $this->assertNotNull($interview->interviewAnswers);
+        $this->assertNotEmpty($interview->interviewAnswers);
         
         $rating = UserRating::factory()
             ->forAccount($account)
