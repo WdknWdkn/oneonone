@@ -44,13 +44,15 @@ class TestDataSeeder extends Seeder
             
         // Create interviews with answers
         foreach ($users as $user) {
-            Interview::factory(2)
-                ->forAccount($account)
-                ->create([
-                    'interviewer_id' => $users->random()->id,
-                    'interviewee_id' => $user->id,
-                ])
-                ->each(fn ($interview) => $interview->withAnswers($templates->random()));
+            foreach (range(1, 2) as $i) {
+                Interview::factory()
+                    ->forAccount($account)
+                    ->withAnswers($templates->random())
+                    ->create([
+                        'interviewer_id' => $users->random()->id,
+                        'interviewee_id' => $user->id,
+                    ]);
+            }
                 
             // Create user ratings
             UserRating::factory(2)
