@@ -35,8 +35,9 @@ class TestDataGenerationTest extends TestCase
             ->create();
             
         $this->assertNotNull($user->account);
-        $this->assertNotNull($user->currentDepartment);
-        $this->assertNotNull($user->currentPosition);
+        $user->refresh();
+        $this->assertNotNull($user->department);
+        $this->assertNotNull($user->position);
         
         $interview = Interview::factory()
             ->forAccount($account)
