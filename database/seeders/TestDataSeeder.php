@@ -11,11 +11,15 @@ use App\Models\RatingMaster;
 use App\Models\UserRating;
 use App\Models\Template;
 use App\Models\Interview;
+use Database\Factories\JapaneseFakerProvider;
+use Faker\Factory;
 
 class TestDataSeeder extends Seeder
 {
     public function run()
     {
+        $faker = Factory::create();
+        $faker->addProvider(new JapaneseFakerProvider($faker));
         $account = Account::factory()->create();
         
         // Create departments and positions
