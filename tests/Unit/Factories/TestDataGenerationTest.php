@@ -10,6 +10,7 @@ use App\Models\RatingMaster;
 use App\Models\UserRating;
 use Database\Factories\JapaneseFakerProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Faker\Factory;
 
 class TestDataGenerationTest extends TestCase
 {
@@ -18,7 +19,9 @@ class TestDataGenerationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->faker->addProvider(new JapaneseFakerProvider($this->faker));
+        $faker = Factory::create();
+        $faker->addProvider(new JapaneseFakerProvider($faker));
+        $this->app->instance(\Faker\Generator::class, $faker);
     }
 
     public function test_can_create_complete_test_data_set()
