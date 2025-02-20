@@ -38,7 +38,7 @@ class InterviewFactory extends Factory
                 'account_id' => $interview->account_id
             ]);
             
-            foreach ($template->items as $item) {
+            foreach ($template->templateItems as $item) {
                 InterviewAnswer::factory()->create([
                     'interview_id' => $interview->id,
                     'template_item_id' => $item->id,
