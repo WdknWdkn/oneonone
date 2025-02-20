@@ -45,6 +45,7 @@ class UserFactory extends Factory
                 'start_date' => now()->subMonths(rand(1, 12)),
                 'account_id' => $user->account_id,
             ]);
+            $user->update(['current_department_id' => $department->id]);
         });
     }
     
@@ -58,6 +59,7 @@ class UserFactory extends Factory
                 'start_date' => now()->subMonths(rand(1, 12)),
                 'account_id' => $user->account_id,
             ]);
+            $user->update(['current_position_id' => $position->id]);
         });
     }
     
