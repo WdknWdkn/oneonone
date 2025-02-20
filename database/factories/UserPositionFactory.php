@@ -12,10 +12,12 @@ class UserPositionFactory extends Factory
 
     protected $model = UserPosition::class;
     
+    protected static $positions = ['部長', '課長', '主任', '担当'];
+
     public function definition(): array
     {
         return [
-            'name' => $this->faker->japanesePosition(),
+            'name' => static::$positions[array_rand(static::$positions)],
         ];
     }
 }

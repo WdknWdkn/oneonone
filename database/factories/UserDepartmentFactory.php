@@ -12,10 +12,12 @@ class UserDepartmentFactory extends Factory
 
     protected $model = UserDepartment::class;
     
+    protected static $departments = ['営業部', '開発部', '人事部', '総務部', 'マーケティング部'];
+
     public function definition(): array
     {
         return [
-            'name' => $this->faker->japaneseDepartment(),
+            'name' => static::$departments[array_rand(static::$departments)],
         ];
     }
 }
