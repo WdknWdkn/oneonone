@@ -8,9 +8,19 @@ use App\Models\User;
 use App\Models\Interview;
 use App\Models\RatingMaster;
 use App\Models\UserRating;
+use Database\Factories\JapaneseFakerProvider;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TestDataGenerationTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->faker->addProvider(new JapaneseFakerProvider($this->faker));
+    }
+
     public function test_can_create_complete_test_data_set()
     {
         $account = Account::factory()->create();
